@@ -1,17 +1,15 @@
-#Stage 1
-FROM node:17-alpine as builder
+# build environment
+FROM node:14-alpine as react-build
 WORKDIR /app
-COPY package.json .
-COPY package-lock.json .
+COPY . ./
 RUN npm install
-COPY . .
 RUN npm run build
 
-#Stage 2
-FROM nginx:1.19.0
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=builder /app/build .
+# server environment
+FROM nginx:alpine
+COPY nginx.conf /etc/nginx/conf.d/configfile.template
+
+COPY --from=react-build /app/build /usr/share/nginx/html
 
 ENV PORT 8080
 ENV HOST 0.0.0.0
