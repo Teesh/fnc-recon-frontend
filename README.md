@@ -84,7 +84,6 @@
 
 * [![Google Cloud Platform][GCP]][GCP-url]
 * [![React][React]][React-url]
-* [![Create React App][CRA]][CRA-url]
 * [![Node JS][Node.js]][Node-url]
 * [![Docker][Docker]][Docker-url]
 * [![Typescript][Typescript]][Typescript-url]
@@ -97,11 +96,11 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-The live version on GCP is currently managed by Teesh. The app itself was bootstrapped using Create React App. The Docker portion of this app is just for sanity checking to make sure it will build on GCP as intended.
+The live version on GCP is currently managed by Teesh. The app itself was bootstrapped using [Create React App](https://create-react-app.dev/). The Docker portion of this app is just for sanity checking to make sure it will build on GCP as intended.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+Use the following steps to get the app running on your local machine
 * Node JS
 
   https://nodejs.org/en/download
@@ -230,8 +229,6 @@ Project Link: [https://github.com/Teesh/fnc-recon-frontend](https://github.com/T
 [React-url]: https://react.dev/
 [Node.js]: https://img.shields.io/badge/Node.js-35495E?style=for-the-badge&logo=nodedotjs&logoColor=4FC08D
 [Node-url]: https://nodejs.org/
-[CRA]: https://img.shields.io/badge/Create_React_App-DD0031?style=for-the-badge&logo=react&logoColor=white
-[CRA-url]: https://create-react-app.dev/
 [Docker]: https://img.shields.io/badge/Docker-4A4A55?style=for-the-badge&logo=docker&logoColor=4285F4
 [Docker-url]: https://docker.com/
 [Typescript]: https://img.shields.io/badge/Typescript-4285F4?style=for-the-badge&logo=typescript&logoColor=white
