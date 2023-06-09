@@ -97,7 +97,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-The live version on GCP is currently managed by Teesh. The live database does not allow any connections from non-production traffic. A local copy may be set up to test API changes and database changes. The MySQL database included as part of the Docker image has emphemeral data but can easily be amended to allow persistent data.
+The live version on GCP is currently managed by Teesh. The app itself was bootstrapped using Create React App. The Docker portion of this app is just for sanity checking to make sure it will build on GCP as intended.
 
 ### Prerequisites
 
