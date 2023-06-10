@@ -1,11 +1,10 @@
 import * as React from 'react'
-import Link from '@mui/material/Link'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import Title from './Title'
+import Title from 'components/Title'
 import { useEffect, useState } from 'react'
 import eventsList from 'tests/eventsList.json'
 
@@ -29,13 +28,13 @@ type Event = {
 }
 
 export default function TeamsList() {
-  const [teams, setTeams] = useState<Event[]>([])
+  const [events, setEvents] = useState<Event[]>([])
 
   useEffect(() => {
-    const getTeams = async () => {
+    const getEvents = async () => {
       let headers: HeadersInit = new Headers()
       if(process.env.REACT_APP_ENVIRONMENT === 'local') {
-        setTeams(eventsList)
+        setEvents(eventsList)
       } else {
         if(process.env.REACT_APP_TBA_READ_API_KEY) {
           headers.set('X-TBA-Auth-Key', process.env.REACT_APP_TBA_READ_API_KEY)
@@ -51,12 +50,12 @@ export default function TeamsList() {
           headers: headers,
           method: 'GET'
         })
-        setTeams(await response.json())
+        setEvents(await response.json())
       }
     }
 
-    getTeams()
-  }, [teams])
+    getEvents()
+  }, [events])
 
   return (
     <React.Fragment>
@@ -71,7 +70,7 @@ export default function TeamsList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {teams.map((row: Event) => (
+          {events.map((row: Event) => (
             <TableRow key={row.key}>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.district ? `${row.district.display_name} District` : row.city}</TableCell>

@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
 import EventsList from './EventsList'
 
-function TeamsContent() {
+function EventsContent() {
   return (
     <React.Fragment>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -19,6 +19,6 @@ function TeamsContent() {
   )
 }
 
-export default function Teams() {
-  return <TeamsContent />
+export default function Events() {
+  return <EventsContent />
 }
