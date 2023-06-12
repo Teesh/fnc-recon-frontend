@@ -21,15 +21,19 @@ export default function TeamsList() {
   const [reports, setReports] = useState<Report[]>([])
 
   useEffect(() => {
-    const getReports = async () => {
-      let headers: HeadersInit = new Headers()
-      let response = await fetch('https://fnc-recon-api-avxirbvnfa-ue.a.run.app/reports', {
-        method: 'GET'
-      })
-      setReports(await response.json())
-    }
+    if(process.env.REACT_APP_ENVIRONMENT === 'local') {
+      // setReports()
+    } else {
+      const getReports = async () => {
+        let headers: HeadersInit = new Headers()
+        let response = await fetch('https://fnc-recon-api-avxirbvnfa-ue.a.run.app/reports', {
+          method: 'GET'
+        })
+        setReports(await response.json())
+      }
 
-    getReports()
+      getReports()
+    }
   }, [reports])
 
   return (

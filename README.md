@@ -119,15 +119,19 @@ Use the following steps to get the app running on your local machine
    ```sh
    git clone https://github.com/Teesh/fnc-recon-frontend.git
    ```
-2. Install NPM packages
+2. Create a `.env` file in the main directory and add the following line
+   ```env
+   REACT_APP_ENVIRONMENT=local
+   ```
+3. Install NPM packages
    ```sh
    npm install
    ```
-3. Start the React app in development mode 
+4. Start the React app in development mode 
    ```sh
    npm start
    ```
-4. (Optional) Start the React app in Docker. Make sure Docker is running first. 
+5. (Optional) Start the React app in Docker. Make sure Docker is running first. 
    ```sh
    docker-compose up -d
    ```
