@@ -96,8 +96,11 @@ function DashboardContent() {
    <SettingButton variant="contained">Settings</SettingButton>
  </Grid>
         <Grid container spacing={2}>
-        <Grid item xs={12} mt="200px">
-   <StandardButton variant="contained">Start Scouting!</StandardButton>
+        <Grid item xs={12}><StandardButton variant="contained">Start Scouting! 2023 Sheet</StandardButton>
+          </Grid> 
+        <Grid item xs={12}>
+    
+   <StandardButton variant="contained">Make Custom</StandardButton>
  </Grid>
  <Grid item xs={12} mt="40px">
    <StandardButton variant="contained">Tutorial</StandardButton>
@@ -112,7 +115,7 @@ function DashboardContent() {
   defaultValue={30}
   sx={{
     width: 300,
-    color: 'success.main',
+    color: 'success.mai n',
     '& .MuiSlider-thumb': {
       borderRadius: '1px',
       
