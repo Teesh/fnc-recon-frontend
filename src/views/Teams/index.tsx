@@ -2,19 +2,27 @@ import * as React from 'react'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Paper from '@mui/material/Paper'
-import TeamsList from './TeamsList'
+import { Button } from '@mui/material'
+import TablePlusMinus from './TablePlusMinus'
+import TableSlider from './TableSlider'
+import TableYN from './TableYN'
+import TableMultipleChoice from './TableMultipleChoice'
+import TitleTitle from './TitleTitle'
+import RedOBlue from './RedOBlue'
+import TeamNSelect from './TeamNSelect'
 
 function TeamsContent() {
   return (
     <React.Fragment>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        {/* Recent Orders */}
-        <Grid item xs={12}>
-          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-            <TeamsList />
-          </Paper>
-        </Grid>
-      </Container>
+      
+      <TitleTitle></TitleTitle>
+      
+      <TeamNSelect></TeamNSelect>
+      <RedOBlue></RedOBlue>
+      <TablePlusMinus></TablePlusMinus>
+      <TableSlider></TableSlider>
+      <TableYN></TableYN>
+      <TableMultipleChoice></TableMultipleChoice>
     </React.Fragment>
   )
 }
