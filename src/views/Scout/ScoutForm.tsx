@@ -1,87 +1,117 @@
 import * as React from 'react'
-import { Button, Grid, TextField } from '@mui/material'
+import { Button, ButtonGroup, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Slider, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useEffect, useState } from 'react'
-
-type Report = {
-  id: number,
-  reporting_team: number,
-  year: number,
-  event: string,
-  match: string,
-  scouted_team: number,
-  alliance: number
-}
+import { Add, Remove } from '@mui/icons-material'
+import { styled } from '@mui/material/styles'
 
 type ScoutReport = {
-    name: string,
-    email: string,
-    phonenumber: string,
+  teamNumber: string,
+  alliance: string,
+  points: number,
+  drivingAbility: number,
+  driveTrain: string
 }
 
 export default function ScoutForm() {
-  const [contactInfo, setContactInfo] = useState<ScoutReport>({
-    name: "",
-    email: "",
-    phonenumber: "",
+  const [scoutInfo, setScoutInfo] = useState<ScoutReport>({
+    teamNumber: '',
+    alliance: 'red',
+    points: 0,
+    drivingAbility: 50,
+    driveTrain: ''
   })
 
-  useEffect(() => {
-    if(process.env.REACT_APP_ENVIRONMENT === 'local') {
-      // setReports()
-    } else {
-      
-    }
-  }, [contactInfo])
+  const handleAllianceChange = (
+    event: React.MouseEvent<HTMLElement>,
+    newAlliance: string,
+  ) => {
+    setScoutInfo({
+      ...scoutInfo,
+      alliance: newAlliance
+    })
+  }
+
+  const PointButton = styled(Button)({
+    height: '57px'
+  })
 
   return (
     <React.Fragment>
-      <Grid container spacing={2}>
-        <form>
-            <Grid container>
-                <h1>Scouting Sheet</h1>
-            </Grid>
-            <Grid container>
-                <Grid container>
-                    <h3>Alliance</h3>
-                </Grid>
-                <Grid container>
-                    <Grid item xs={6}>
-                        <Button color="error" variant="contained">Red</Button>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Button variant="contained">Blue</Button>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid container>
-                <Grid container></Grid>
-                <Grid container xs={6}></Grid>
-            </Grid>
-            <Grid container xs={12}>
-                <Grid container xs={6}></Grid>
-                <Grid container xs={6}></Grid>
-            </Grid>
-            <Grid container xs={12}>
-                <Grid container xs={6}></Grid>
-                <Grid container xs={6}></Grid>
-            </Grid>
-            <Grid container xs={12}>
-                <Grid container xs={6}></Grid>
-                <Grid container xs={6}></Grid>
-            </Grid>
-            <Grid container xs={12}>
-                <Grid container xs={6}></Grid>
-                <Grid container xs={6}></Grid>
-            </Grid>
-        </form>
+      <Grid p={3} justifyContent="center" container spacing={2}>
+        <Grid item xs={12}>
+          <h1>Scouting Sheet</h1>
+        </Grid>
+        <Grid container>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              label="Team Number"
+              placeholder="1234"
+              onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              value={scoutInfo.teamNumber}
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+        <Grid item xs={12}><Divider /></Grid>
+        <Grid item xs={6}>
+          <h3>Alliance</h3>
+        </Grid>
+        <Grid item xs={6}>
+          <ToggleButtonGroup
+            value={scoutInfo.alliance}
+            exclusive
+            size="large"
+            onChange={handleAllianceChange}
+            fullWidth
+          >
+            <ToggleButton color="error" value="red">Red</ToggleButton>
+            <ToggleButton color="primary" value="blue">Blue</ToggleButton>
+          </ToggleButtonGroup>
+        </Grid>
+        <Grid item xs={12}><Divider /></Grid>
+        <Grid item xs={6}>
+          <TextField
+            variant="outlined"
+            label="Points"
+            onChange={e => setScoutInfo({...scoutInfo, points: +e.target.value})}
+            value={scoutInfo.points}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={6}>
+          <ButtonGroup
+            size="large"
+            variant="contained"
+            fullWidth
+          >
+            <PointButton color="primary" onClick={e => setScoutInfo({...scoutInfo, points: ++scoutInfo.points})}><Add/></PointButton>
+            <PointButton color="error" onClick={e => setScoutInfo({...scoutInfo, points: --scoutInfo.points})}><Remove /></PointButton>
+          </ButtonGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+          <h3 margin-bottom={1}>Drivig Ability: {scoutInfo.drivingAbility}%</h3>
+          <Slider value={scoutInfo.drivingAbility} defaultValue={scoutInfo.drivingAbility} step={10} marks min={0} max={100} onChange={(e,value) => setScoutInfo({...scoutInfo, drivingAbility: +value})}/>
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+          <FormControl fullWidth>
+            <InputLabel id="drivetrain">Drivetrain</InputLabel>
+            <Select
+              value={scoutInfo.driveTrain}
+              label="Drivetrain"
+              onChange={e => setScoutInfo({...scoutInfo, driveTrain: e.target.value})}
+              fullWidth
+            >
+              <MenuItem value="">None</MenuItem>
+              <MenuItem value="Tank">Tank</MenuItem>
+              <MenuItem value="Swerve">Swerve</MenuItem>
+              <MenuItem value="Monstrosity">Monstrosity</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
       </Grid>
-          {/* <TextField
-            variant="standard"
-            type="text"
-            name="name"
-            placeholder="Name"
-            value={contactInfo.name}
-          /> */}
     </React.Fragment>
   )
 }
