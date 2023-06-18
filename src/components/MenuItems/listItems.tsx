@@ -9,6 +9,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import InfoIcon from '@mui/icons-material/Info'
 import AssignmentIcon from '@mui/icons-material/Assignment'
+import TrackChangesIcon from '@mui/icons-material/TrackChanges'
 import { Link } from 'react-router-dom'
 
 export const mainListItems = (
@@ -36,6 +37,12 @@ export const mainListItems = (
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Reports" />
+    </ListItemButton>
+    <ListItemButton component={Link} to="/scout">
+      <ListItemIcon>
+        <TrackChangesIcon />
+      </ListItemIcon>
+      <ListItemText primary="Scout" />
     </ListItemButton>
     <ListItemButton component={Link} to="/about">
       <ListItemIcon>

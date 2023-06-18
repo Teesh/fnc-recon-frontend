@@ -15,13 +15,14 @@ import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import GitHubIcon from '@mui/icons-material/GitHub';
+import GitHubIcon from '@mui/icons-material/GitHub'
 import { mainListItems } from '../components/MenuItems/listItems'
 import Dashboard from './Dashboard'
 import Teams from './Teams'
-import Events from './Events';
-import Reports from './Reports';
-import About from './About';
+import Events from './Events'
+import Reports from './Reports'
+import Scout from './Scout'
+import About from './About'
 
 function Source(props: any) {
   return (
@@ -170,6 +171,7 @@ function MainContent() {
             <Route path="teams" element={<Teams />} />
             <Route path="events" element={<Events />} />
             <Route path="reports" element={<Reports />} />
+            <Route path="scout" element={<Scout />} />
             <Route path="about" element={<About />} />
           </Routes>
         </Box>
