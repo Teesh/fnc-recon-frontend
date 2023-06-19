@@ -119,7 +119,7 @@ export default function ScoringTable() {
     if(dockingState.autoDock) tempScore += 8
     if(dockingState.autoEngage) tempScore += 4
     if(dockingState.endgameDock) tempScore += 6
-    if(dockingState.endgameEngage) tempScore += 10
+    if(dockingState.endgameEngage) tempScore += 4
 
     return tempScore
   }
