@@ -163,6 +163,7 @@ function MainContent() {
             flexGrow: 1,
             height: '100vh',
             overflow: 'auto',
+            minWidth: 560
           }}
         >
           <Toolbar />
