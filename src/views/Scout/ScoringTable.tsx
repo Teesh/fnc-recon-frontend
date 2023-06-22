@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, CardActionArea, Checkbox, Divider, FormControlLabel, FormGroup, Grid, TextField } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActionArea, Checkbox, Divider, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, TextField } from "@mui/material"
 import { ChangeHistory, CropSquare, RadioButtonUnchecked } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 import { useEffect, useState } from "react"
@@ -50,21 +50,24 @@ type ScoringGrid = {
   cobe_3_9: boolean,
 }
 
+enum ChargingMode {
+  None,
+  Community, // Taxied in Auto, Parked in Endgame
+  Docked,
+  Engaged
+}
+
 type DockingState = {
-  autoDock: boolean,
-  autoEngage: boolean,
-  endgameDock: boolean,
-  endgameEngage: boolean
+  autonomous: ChargingMode,
+  endgame: ChargingMode
 }
 
 export default function ScoringTable() {
   const [totalScore, setTotalScore] = useState(0)
   const [autonomousGamePieces, setAutonomousGamePiece] = useState(0)
   const [dockingState, setDockingState] = useState<DockingState>({
-    autoDock: false,
-    autoEngage: false,
-    endgameDock: false,
-    endgameEngage: false
+    autonomous: ChargingMode.None,
+    endgame: ChargingMode.None,
   })
 
   const [score, setScore] = useState<ScoringGrid>({
@@ -116,10 +119,12 @@ export default function ScoringTable() {
     
     tempScore += autonomousGamePieces
 
-    if(dockingState.autoDock) tempScore += 8
-    if(dockingState.autoEngage) tempScore += 4
-    if(dockingState.endgameDock) tempScore += 6
-    if(dockingState.endgameEngage) tempScore += 4
+    if(dockingState.autonomous === ChargingMode.Community) tempScore += 3
+    if(dockingState.autonomous === ChargingMode.Docked) tempScore += 8
+    if(dockingState.autonomous === ChargingMode.Engaged) tempScore += 12
+    if(dockingState.endgame === ChargingMode.Community) tempScore += 2
+    if(dockingState.endgame === ChargingMode.Docked) tempScore += 6
+    if(dockingState.endgame === ChargingMode.Engaged) tempScore += 10
 
     return tempScore
   }
@@ -363,18 +368,28 @@ export default function ScoringTable() {
           <Button variant="contained" color="error" onClick={e => setAutonomousGamePiece(autonomousGamePieces === 0 ? 0 : autonomousGamePieces-1)}>-</Button>
         </ButtonGroup>
       </Grid>
-      <Grid item xs={6} mt={2}>
-        <FormGroup>
-          <FormControlLabel control={<Checkbox checked={dockingState.autoDock} onChange={e => setDockingState({...dockingState, autoDock: !dockingState.autoDock})} />} label="Autonomous Docking" labelPlacement="start"/>
-          <FormControlLabel control={<Checkbox checked={dockingState.autoEngage} onChange={e => setDockingState({...dockingState, autoEngage: !dockingState.autoEngage})} />} label="Endgame Docking" labelPlacement="start"/>
-        </FormGroup>
+      <Grid item xs={5} mt={2} textAlign='right'>
+        <h3>Autonomous</h3>
+        <RadioGroup
+          onChange={e => setDockingState({...dockingState, autonomous: +e.target.value})}
+        >
+          <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="start"/>
+          <FormControlLabel control={<Radio value={1} />} label="Taxied" labelPlacement="start"/>
+          <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="start"/>
+          <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="start"/>
+        </RadioGroup>
       </Grid>
-      <Grid item xs={1} mt={2}></Grid>
-      <Grid item xs={5} mt={2}>
-        <FormGroup>
-          <FormControlLabel control={<Checkbox checked={dockingState.endgameDock} onChange={e => setDockingState({...dockingState, endgameDock: !dockingState.endgameDock})} />} label="Engaged?"/>
-          <FormControlLabel control={<Checkbox checked={dockingState.endgameEngage} onChange={e => setDockingState({...dockingState, endgameEngage: !dockingState.endgameEngage})} />} label="Engaged?"/>
-        </FormGroup>
+      <Grid item xs={2} mt={2}></Grid>
+      <Grid item xs={5} mt={2}  textAlign='left'>
+        <h3>Engame</h3>
+        <RadioGroup
+          onChange={e => setDockingState({...dockingState, endgame: +e.target.value})}
+        >
+          <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="end"/>
+          <FormControlLabel control={<Radio value={1} />} label="Parked" labelPlacement="end"/>
+          <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="end"/>
+          <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="end"/>
+        </RadioGroup>
       </Grid>
     </Grid>
   )
