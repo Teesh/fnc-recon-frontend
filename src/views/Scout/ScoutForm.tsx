@@ -72,7 +72,7 @@ export default function ScoutForm() {
       { /* Driving Ability */}
         <Grid item xs={12}>
           <Divider />
-          <h3 margin-bottom={1}>Drivig Ability: {scoutInfo.drivingAbility}%</h3>
+          <h3 margin-bottom={1}>Driving Ability: {scoutInfo.drivingAbility}%</h3>
           <Slider value={scoutInfo.drivingAbility} defaultValue={scoutInfo.drivingAbility} step={10} marks min={0} max={100} onChange={(e,value) => setScoutInfo({...scoutInfo, drivingAbility: +value})}/>
           <Divider />
         </Grid>

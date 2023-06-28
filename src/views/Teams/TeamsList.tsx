@@ -1,76 +1,96 @@
-import * as React from 'react'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell from '@mui/material/TableCell'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Title from 'components/Title'
-import { useEffect, useState } from 'react'
-import teamsList from 'tests/teamList.json'
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { createMuiTheme, ThemeProvider } from '@mui/material/styles';
 
-type Team = {
-  key: string,
-  team_number: number,
-  nickname: string,
+const theme2 = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#DAEFB3', // Custom primary color
+    },
+    secondary: {
+      main: '#EEF4D4', // Custom secondary color
+    },
+  },
+  typography: {
+    fontFamily: 'Helvetica',
+    }
+});
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme2.palette.primary.main,
+    color: theme2.palette.common.black,
+    // do font changes here
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 16,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&': {
+    backgroundColor: theme2.palette.secondary.main,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
+function createData(
   name: string,
-  city: string | null,
-  state_prov: string | null,
-  country: string | null
+  teamNumber: number,
+  location: string,
+  division: string,
+) {
+  return { name, teamNumber, location, division};
 }
 
-export default function TeamsList() {
-  const [teams, setTeams] = useState<Team[]>([])
+const rows = [
+  createData('Roboeagles', 4828, 'Raleigh, NC', 'FIRST NC'),
+  createData('Terrorbytes', 4561, 'Raleigh, NC', 'FIRST NC'),
+  createData('The Zebracorns', 900, 'Durham, NC', 'FIRST, NC'),
+  createData('Pitt Pirates', 2642, 'Greenville, NC', 'FIRST NC'),
+  createData('Eastbots', 4795, 'Chapel Hill, NC', 'FIRST NC'),
+];
 
-  useEffect(() => {
-    const getTeams = async () => {
-      let headers: HeadersInit = new Headers()
-      if(process.env.REACT_APP_ENVIRONMENT === 'local') {
-        setTeams(teamsList)
-      } else {
-        if(process.env.REACT_APP_TBA_READ_API_KEY) {
-          headers.set('X-TBA-Auth-Key', process.env.REACT_APP_TBA_READ_API_KEY)
-          headers.set('Access-Control-Allow-Origin', '*')
-          headers.set('Access-Control-Allow-Credentials', 'true')
-          headers.set('Access-Control-Allow-Headers', 'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers')
-          headers.set('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT')
-        } else {
-          console.log('Missing API Key')
-          return
-        }
-        let response = await fetch('https://www.thebluealliance.com/api/v3/teams/0/simple', {
-          headers: headers,
-          method: 'GET'
-        })
-        setTeams(await response.json())
-      }
-    }
 
-    getTeams()
-  }, [teams])
-
+export default function CustomizedTables() {
   return (
-    <React.Fragment>
-      <Title>Teams</Title>
-      <Table size="small">
+    <ThemeProvider theme={theme2}>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <TableCell>Team Numer</TableCell>
-            <TableCell>Team Name</TableCell>
-            <TableCell>City</TableCell>
-            <TableCell align="right">State</TableCell>
+            <StyledTableCell>Team Number</StyledTableCell>
+            <StyledTableCell align="right">Team Name</StyledTableCell>
+            <StyledTableCell align="right">Location</StyledTableCell>
+            <StyledTableCell align="right">Division</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {teams.map((row: Team) => (
-            <TableRow key={row.key}>
-              <TableCell>{row.team_number}</TableCell>
-              <TableCell>{row.nickname}</TableCell>
-              <TableCell>{row.city}</TableCell>
-              <TableCell align="right">{`${row.state_prov}`}</TableCell>
-            </TableRow>
+          {rows.map((row) => (
+            <StyledTableRow key={row.name}>
+              <StyledTableCell component="th" scope="row">
+                {row.teamNumber}
+              </StyledTableCell>
+              <StyledTableCell align="right">{row.name}</StyledTableCell>
+              <StyledTableCell align="right">{row.location}</StyledTableCell>
+              <StyledTableCell align="right">{row.division}</StyledTableCell>
+            </StyledTableRow>
           ))}
         </TableBody>
       </Table>
-    </React.Fragment>
-  )
+    </TableContainer>
+  </ThemeProvider>
+  );
 }
