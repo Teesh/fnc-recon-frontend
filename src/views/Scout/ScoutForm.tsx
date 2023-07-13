@@ -13,7 +13,7 @@ type ScoutReport = {
 export default function ScoutForm() {
   const [scoutInfo, setScoutInfo] = useState<ScoutReport>({
     teamNumber: '',
-    alliance: 'red',
+    alliance: '',
     drivingAbility: 50,
     driveTrain: ''
   })
@@ -49,10 +49,7 @@ export default function ScoutForm() {
         </Grid>
         <Grid item xs={12}><Divider /></Grid>
       { /* Alliance */}
-        <Grid item xs={6}>
-          <h3>Alliance</h3>
-        </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <ToggleButtonGroup
             value={scoutInfo.alliance}
             exclusive
@@ -60,8 +57,12 @@ export default function ScoutForm() {
             onChange={handleAllianceChange}
             fullWidth
           >
-            <ToggleButton color="error" value="red">Red</ToggleButton>
-            <ToggleButton color="primary" value="blue">Blue</ToggleButton>
+            <ToggleButton color="error" value="red1">Red 1</ToggleButton>
+            <ToggleButton color="error" value="red2">Red 2</ToggleButton>
+            <ToggleButton color="error" value="red3">Red 3</ToggleButton>
+            <ToggleButton color="primary" value="blue1">Blue 1</ToggleButton>
+            <ToggleButton color="primary" value="blue2">Blue 2</ToggleButton>
+            <ToggleButton color="primary" value="blue3">Blue 3</ToggleButton>
           </ToggleButtonGroup>
         </Grid>
         <Grid item xs={12}><Divider /></Grid>

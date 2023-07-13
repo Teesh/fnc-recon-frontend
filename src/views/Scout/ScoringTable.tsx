@@ -1,5 +1,4 @@
-import { Button, ButtonGroup, Card, CardActionArea, Checkbox, Divider, FormControlLabel, FormGroup, Grid, Radio, RadioGroup, TextField } from "@mui/material"
-import { ChangeHistory, CropSquare, RadioButtonUnchecked } from '@mui/icons-material'
+import { Button, ButtonGroup, Card, CardActionArea, FormControlLabel, Grid, Icon, Radio, RadioGroup, TextField } from "@mui/material"
 import { styled } from '@mui/material/styles'
 import { useEffect, useState } from "react"
 
@@ -11,11 +10,11 @@ const CountText = styled(TextField)({
 
 const CobeCard = styled(Card)({
   borderRadius: 0,
-  minWidth: 48,
-  minHeight: 48,
-  maxWidth: 48,
-  maxHeight: 48,
-  display: 'flex'
+  height: '100%'
+})
+
+const CobeGrid = styled(Grid)({
+  width: 'calc(100% / 9)',
 })
 
 type ScoringGrid = {
@@ -146,212 +145,38 @@ export default function ScoringTable() {
           }}
         />
       </Grid>
-      <Grid container direction="row">
-      {/* Row 1 */}
-        {/* Row 1 Grid 1 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_1_1 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_1_1: !score.cone_1_1})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cube_1_2 ? 'purple' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cube_1_2: !score.cube_1_2})}>
-              <CropSquare />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_1_3 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_1_3: !score.cone_1_3})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        {/* Row 1 Grid 2 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_1_4 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_1_4: !score.cone_1_4})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cube_1_5 ? 'purple' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cube_1_5: !score.cube_1_5})}>
-              <CropSquare />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_1_6 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_1_6: !score.cone_1_6})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        {/* Row 1 Grid 3 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_1_7 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_1_7: !score.cone_1_7})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cube_1_8 ? 'purple' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cube_1_8: !score.cube_1_8})}>
-              <CropSquare />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_1_9 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_1_9: !score.cone_1_9})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-      </Grid>
-      <Grid container direction="row">
-      {/* Row 2 */}
-        {/* Row 2 Grid 1 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_2_1 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_2_1: !score.cone_2_1})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cube_2_2 ? 'purple' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cube_2_2: !score.cube_2_2})}>
-              <CropSquare />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_2_3 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_2_3: !score.cone_2_3})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        {/* Row 2 Grid 2 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_2_4 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_2_4: !score.cone_2_4})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cube_2_5 ? 'purple' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cube_2_5: !score.cube_2_5})}>
-              <CropSquare />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_2_6 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_2_6: !score.cone_2_6})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        {/* Row 2 Grid 3 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_2_7 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_2_7: !score.cone_2_7})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cube_2_8 ? 'purple' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cube_2_8: !score.cube_2_8})}>
-              <CropSquare />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cone_2_9 ? 'orange' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cone_2_9: !score.cone_2_9})}>
-              <ChangeHistory />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-      </Grid>
-      <Grid container direction="row">
-      {/* Row 3 */}
-        {/* Row 3 Grid 1 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_1 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_1: !score.cobe_3_1})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_2 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_2: !score.cobe_3_2})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_3 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_3: !score.cobe_3_3})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        {/* Row 3 Grid 2 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_4 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_4: !score.cobe_3_4})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_5 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_5: !score.cobe_3_5})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_6 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_6: !score.cobe_3_6})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        {/* Row 3 Grid 3 */}
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_7 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_7: !score.cobe_3_7})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" style={{ backgroundColor: score.cobe_3_8 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_8: !score.cobe_3_8})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
-        <Grid item>
-          <CobeCard variant="outlined" sx={{ backgroundColor: score.cobe_3_9 ? 'pink' : 'inherit'}}>
-            <CardActionArea onClick={e => setScore({...score, cobe_3_9: !score.cobe_3_9})}>
-              <RadioButtonUnchecked />
-            </CardActionArea>
-          </CobeCard>
-        </Grid>
+      <Grid container spacing={0}>
+      { 
+        Object.values(score).map((value: boolean, index: number) => {
+          let i = Math.ceil((index + 1) / 9)
+          let j = (index) % 9 + 1
+          let gamePiece, color, shape
+          if (i > 2) {
+            gamePiece = 'cobe'
+            color = 'pink'
+            shape = 'radio_button_unchecked'
+          } else if (j === 2 || j === 5 || j === 8) {
+            gamePiece = 'cube'
+            color = 'purple'
+            shape = 'crop_square'
+          } else {
+            gamePiece = 'cone'
+            color = 'orange'
+            shape = 'change_history'
+          }
+
+          let key = `${gamePiece}_${i}_${j}`
+          return (
+            <CobeGrid item>
+              <CobeCard variant="outlined" style={{ backgroundColor: score[key as keyof ScoringGrid] ? color : 'inherit'}}>
+                <CardActionArea onClick={e => setScore({...score, [key]: !score[key as keyof ScoringGrid]})} sx={{ padding: '36%', position: 'relative' }}>
+                  <Icon>{ shape }</Icon>
+                </CardActionArea>
+              </CobeCard>
+            </CobeGrid>
+          )
+        })
+      }
       </Grid>
       <Grid item xs={12} mt={4}>
         <ButtonGroup fullWidth>
