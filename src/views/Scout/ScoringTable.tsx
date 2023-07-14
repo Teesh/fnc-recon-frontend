@@ -1,6 +1,7 @@
-import { Button, ButtonGroup, Card, CardActionArea, FormControlLabel, Grid, Icon, Radio, RadioGroup, TextField } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActionArea, Divider, FilledInput, FormControl, FormControlLabel, FormLabel, Grid, Icon, IconButton, Input, InputAdornment, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
 import { styled } from '@mui/material/styles'
 import { useEffect, useState } from "react"
+import { Add, Remove } from '@mui/icons-material';
 
 const CountText = styled(TextField)({
   minWidth: 280, 
@@ -49,6 +50,24 @@ type ScoringGrid = {
   cobe_3_9: boolean,
 }
 
+type MissedScores = {
+  cone_high: number,
+  cone_mid: number,
+  cone_low: number,
+  cube_high: number,
+  cube_mid: number,
+  cube_low: number
+}
+
+type Intakes = {
+  single_grabbed: number,
+  single_missed: number,
+  double_grabbed: number,
+  double_missed: number,
+  floor_grabbed: number,
+  floor_missed: number
+}
+
 enum ChargingMode {
   None,
   Community, // Taxied in Auto, Parked in Endgame
@@ -64,6 +83,7 @@ type DockingState = {
 export default function ScoringTable() {
   const [totalScore, setTotalScore] = useState(0)
   const [autonomousGamePieces, setAutonomousGamePiece] = useState(0)
+  const [autonomousGamePiecesMissed, setAutonomousGamePieceMissed] = useState(0)
   const [dockingState, setDockingState] = useState<DockingState>({
     autonomous: ChargingMode.None,
     endgame: ChargingMode.None,
@@ -101,6 +121,24 @@ export default function ScoringTable() {
     cobe_3_9: false,
   })
 
+  const [ misses, setMisses ] = useState<MissedScores>({
+    cone_high: 0,
+    cone_mid: 0,
+    cone_low: 0,
+    cube_high: 0,
+    cube_mid: 0,
+    cube_low: 0
+  })
+
+  const [intakes, setIntakes ] = useState<Intakes>({
+    single_grabbed: 0,
+    single_missed: 0,
+    double_grabbed: 0,
+    double_missed: 0,
+    floor_grabbed: 0,
+    floor_missed: 0
+  })
+
   const calcScore = () => {
     let tempScore = 0
     let linkCounter = 0
@@ -135,6 +173,57 @@ export default function ScoringTable() {
   return (
     <Grid container>
       <Grid item xs={12} mb={2}>
+        <h3>Autonomous</h3>
+      </Grid>
+      <Grid item xs={12} mb={2}>
+        <ButtonGroup fullWidth>
+          <Button variant="contained" color="success" onClick={e => setAutonomousGamePiece(autonomousGamePieces+1)}>+</Button>
+          <CountText 
+            variant="outlined"
+            label="Autonomous Game Pieces"
+            sx={{textAlign: 'center'}}
+            value={autonomousGamePieces}
+            InputProps={{
+              readOnly: true
+            }}
+          ></CountText>
+          <Button variant="contained" color="error" onClick={e => setAutonomousGamePiece(autonomousGamePieces === 0 ? 0 : autonomousGamePieces-1)}>-</Button>
+        </ButtonGroup>
+      </Grid>
+      <Grid item xs={12} mb={2}>
+        <ButtonGroup fullWidth>
+          <Button variant="contained" color="success" onClick={e => setAutonomousGamePieceMissed(autonomousGamePiecesMissed+1)}>+</Button>
+          <CountText 
+            variant="outlined"
+            label="Autonomous Game Pieces Missed"
+            sx={{textAlign: 'center'}}
+            value={autonomousGamePiecesMissed}
+            InputProps={{
+              readOnly: true
+            }}
+          ></CountText>
+          <Button variant="contained" color="error" onClick={e => setAutonomousGamePieceMissed(autonomousGamePiecesMissed === 0 ? 0 : autonomousGamePiecesMissed-1)}>-</Button>
+        </ButtonGroup>
+      </Grid>
+      <Grid item xs={12} mb={2}>
+        <FormControl>
+          <FormLabel id="demo-row-radio-buttons-group-label">Docking</FormLabel>
+          <RadioGroup
+            onChange={e => setDockingState({...dockingState, autonomous: +e.target.value})}
+            row
+          >
+            <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="end"/>
+            <FormControlLabel control={<Radio value={1} />} label="Taxied" labelPlacement="end"/>
+            <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="end"/>
+            <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="end"/>
+          </RadioGroup>
+        </FormControl>
+      </Grid>
+      <Grid item xs={12} mb={2}>
+        <Divider />
+        <h3>Teleop</h3>
+      </Grid>
+      <Grid item xs={12} mb={2}>
         <TextField
           variant="outlined"
           label="Points"
@@ -145,7 +234,7 @@ export default function ScoringTable() {
           }}
         />
       </Grid>
-      <Grid container spacing={0}>
+      <Grid container spacing={0} mb={2}>
       { 
         Object.values(score).map((value: boolean, index: number) => {
           let i = Math.ceil((index + 1) / 9)
@@ -178,43 +267,255 @@ export default function ScoringTable() {
         })
       }
       </Grid>
-      <Grid item xs={12} mt={4}>
-        <ButtonGroup fullWidth>
-          <Button variant="contained" color="success" onClick={e => setAutonomousGamePiece(autonomousGamePieces+1)}>+</Button>
-          <CountText 
-            variant="outlined"
-            label="Autonomous Game Pieces"
-            sx={{textAlign: 'center'}}
-            value={autonomousGamePieces}
-            InputProps={{
-              readOnly: true
-            }}
-          ></CountText>
-          <Button variant="contained" color="error" onClick={e => setAutonomousGamePiece(autonomousGamePieces === 0 ? 0 : autonomousGamePieces-1)}>-</Button>
-        </ButtonGroup>
+      <Grid item xs={12} mb={2}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>Misses</TableCell>
+                <TableCell align="center">High</TableCell>
+                <TableCell align="center">Mid</TableCell>
+                <TableCell align="center">Low</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Cones</TableCell>
+                <TableCell align="center">
+                 <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cone_high}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cone_mid}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cone_low}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Cubes</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cube_high}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cube_mid}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cube_low}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Grid>
-      <Grid item xs={5} mt={2} textAlign='right'>
-        <h3>Autonomous</h3>
-        <RadioGroup
-          onChange={e => setDockingState({...dockingState, autonomous: +e.target.value})}
-        >
-          <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="start"/>
-          <FormControlLabel control={<Radio value={1} />} label="Taxied" labelPlacement="start"/>
-          <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="start"/>
-          <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="start"/>
-        </RadioGroup>
+      <Grid item xs={12} mb={2}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>Intakes</TableCell>
+                <TableCell align="center">Single</TableCell>
+                <TableCell align="center">Double</TableCell>
+                <TableCell align="center">Floor</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Grabbed</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.single_grabbed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.double_grabbed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.floor_grabbed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Missed</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.single_missed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.double_missed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.floor_missed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Grid>
-      <Grid item xs={2} mt={2}></Grid>
-      <Grid item xs={5} mt={2}  textAlign='left'>
-        <h3>Engame</h3>
-        <RadioGroup
-          onChange={e => setDockingState({...dockingState, endgame: +e.target.value})}
-        >
-          <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="end"/>
-          <FormControlLabel control={<Radio value={1} />} label="Parked" labelPlacement="end"/>
-          <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="end"/>
-          <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="end"/>
-        </RadioGroup>
+      <Grid item xs={12} mb={2}>
+        <Divider />
+        <h3>Endgame</h3>
+      </Grid>
+      <Grid item xs={12} mb={2}>
+        <FormControl>
+          <FormLabel id="demo-row-radio-buttons-group-label">Docking</FormLabel>
+          <RadioGroup
+            onChange={e => setDockingState({...dockingState, endgame: +e.target.value})}
+            row
+          >
+            <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="end"/>
+            <FormControlLabel control={<Radio value={1} />} label="Parked" labelPlacement="end"/>
+            <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="end"/>
+            <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="end"/>
+          </RadioGroup>
+        </FormControl>
       </Grid>
     </Grid>
   )

@@ -41,6 +41,7 @@ export default function ScoutForm() {
               variant="outlined"
               label="Team Number"
               placeholder="1234"
+              type="number"
               onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
               value={scoutInfo.teamNumber}
               fullWidth
