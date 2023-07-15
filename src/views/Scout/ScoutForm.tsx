@@ -91,6 +91,7 @@ export default function ScoutForm() {
               <MenuItem value="">None</MenuItem>
               <MenuItem value="Tank">Tank</MenuItem>
               <MenuItem value="Swerve">Swerve</MenuItem>
+              <MenuItem value="Mechanum">Mechanum</MenuItem>
               <MenuItem value="Monstrosity">Monstrosity</MenuItem>
             </Select>
           </FormControl>

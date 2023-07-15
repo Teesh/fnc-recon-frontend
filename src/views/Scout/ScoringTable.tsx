@@ -285,12 +285,16 @@ export default function ScoringTable() {
                     value={misses.cone_high}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cone_high: misses.cone_high+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cone_high: Math.max(misses.cone_high-1, 0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -301,12 +305,16 @@ export default function ScoringTable() {
                     value={misses.cone_mid}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cone_mid: misses.cone_mid+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cone_mid: Math.max(misses.cone_mid-1, 0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -317,12 +325,16 @@ export default function ScoringTable() {
                     value={misses.cone_low}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cone_low: misses.cone_low+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cone_low: Math.max(misses.cone_low-1, 0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -336,12 +348,16 @@ export default function ScoringTable() {
                     value={misses.cube_high}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cube_high: misses.cube_high+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cube_high: Math.max(misses.cube_high-1, 0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -352,12 +368,16 @@ export default function ScoringTable() {
                     value={misses.cube_mid}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cube_mid: misses.cube_mid+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cube_mid: Math.max(misses.cube_mid-1, 0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -368,12 +388,16 @@ export default function ScoringTable() {
                     value={misses.cube_low}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cube_low: misses.cube_low+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cube_low: Math.max(misses.cube_low-1, 0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -401,12 +425,16 @@ export default function ScoringTable() {
                     value={intakes.single_grabbed}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, single_grabbed: intakes.single_grabbed+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, single_grabbed: Math.max(intakes.single_grabbed-1,0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -417,12 +445,16 @@ export default function ScoringTable() {
                     value={intakes.double_grabbed}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, double_grabbed: intakes.double_grabbed+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, double_grabbed: Math.max(intakes.double_grabbed-1,0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -433,12 +465,16 @@ export default function ScoringTable() {
                     value={intakes.floor_grabbed}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, floor_grabbed: intakes.floor_grabbed+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, floor_grabbed: Math.max(intakes.floor_grabbed-1,0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -452,12 +488,16 @@ export default function ScoringTable() {
                     value={intakes.single_missed}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, single_missed: intakes.single_missed+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, single_missed: Math.max(intakes.single_missed-1,0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -468,12 +508,16 @@ export default function ScoringTable() {
                     value={intakes.double_missed}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, double_missed: intakes.double_missed+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, double_missed: Math.max(intakes.double_missed-1,0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
@@ -484,12 +528,16 @@ export default function ScoringTable() {
                     value={intakes.floor_missed}
                     startAdornment={
                       <InputAdornment position="start">
-                        <IconButton edge="start"><Add /></IconButton>
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, floor_missed: intakes.floor_missed+1})}}
+                        ><Add /></IconButton>
                       </InputAdornment>
                     }
                     endAdornment={
                       <InputAdornment position="end">
-                        <IconButton edge="end"><Remove /></IconButton>
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, floor_missed: Math.max(intakes.floor_missed-1,0)})}}
+                        ><Remove /></IconButton>
                       </InputAdornment>
                     }
                   />
