@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Button, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Slider, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Button, Divider, Grid, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useRef, useState } from 'react'
 import ScoringTable, { RefObject } from './ScoringTable'
 
@@ -30,13 +30,13 @@ export default function ScoutForm() {
     })
   }
 
-  const submitReport = () => {
-    let endpoint = "http://localhost:8080"
+  const submitReport = async () => {
+    let endpoint = "/api/v1"
     let requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        team_number: scoutInfo.teamNumber,
+      body: JSON.stringify({
+        team_number: '4561',
         alliance: scoutInfo.alliance,
         year: '2023',
         event: scoutInfo.eventName,
@@ -45,7 +45,13 @@ export default function ScoutForm() {
         ...scoreRef.current?.getScoreData()
       })
     }
-    fetch(endpoint, requestOptions)
+    console.log(requestOptions)
+    try {
+      let response = await fetch(endpoint, requestOptions)
+      console.log(response)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   return (
@@ -76,7 +82,7 @@ export default function ScoutForm() {
               variant="outlined"
               label="Event"
               placeholder="Asheville District Event"
-              onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
               value={scoutInfo.eventName}
               fullWidth
             />
@@ -86,7 +92,7 @@ export default function ScoutForm() {
               variant="outlined"
               label="Match Number"
               placeholder="Q22"
-              onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              onChange={e => setScoutInfo({...scoutInfo, match: e.target.value})}
               value={scoutInfo.match}
               fullWidth
             />

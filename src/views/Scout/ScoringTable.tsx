@@ -356,7 +356,7 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
 
           let key = `${gamePiece}_${i}_${j}`
           return (
-            <CobeGrid item>
+            <CobeGrid item key={key}>
               <CobeCard variant="outlined" style={{ backgroundColor: score[key as keyof ScoringGrid] ? color : 'inherit'}}>
                 <CardActionArea onClick={e => setScore({...score, [key]: !score[key as keyof ScoringGrid]})} sx={{ padding: '36%', position: 'relative' }}>
                   <Icon>{ shape }</Icon>
