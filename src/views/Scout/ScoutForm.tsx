@@ -1,21 +1,23 @@
 import * as React from 'react'
 import { Button, Divider, FormControl, Grid, InputLabel, MenuItem, Select, Slider, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
-import { useState } from 'react'
-import ScoringTable from './ScoringTable'
+import { useRef, useState } from 'react'
+import ScoringTable, { RefObject } from './ScoringTable'
 
 type ScoutReport = {
   teamNumber: string,
   alliance: string,
-  drivingAbility: number,
-  driveTrain: string
+  eventName: string,
+  match: string
 }
 
 export default function ScoutForm() {
+  const scoreRef = useRef<RefObject>(null)
+  
   const [scoutInfo, setScoutInfo] = useState<ScoutReport>({
     teamNumber: '',
     alliance: '',
-    drivingAbility: 50,
-    driveTrain: ''
+    eventName: '',
+    match: ''
   })
 
   const handleAllianceChange = (
@@ -28,13 +30,31 @@ export default function ScoutForm() {
     })
   }
 
+  const submitReport = () => {
+    let endpoint = "http://localhost:8080"
+    let requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        team_number: scoutInfo.teamNumber,
+        alliance: scoutInfo.alliance,
+        year: '2023',
+        event: scoutInfo.eventName,
+        match: scoutInfo.match,
+        scouted_team: scoutInfo.teamNumber,
+        ...scoreRef.current?.getScoreData()
+      })
+    }
+    fetch(endpoint, requestOptions)
+  }
+
   return (
     <React.Fragment>
       <Grid px={3} justifyContent="center" container spacing={2}>
         <Grid item xs={12}>
           <h1>Scouting Sheet</h1>
         </Grid>
-      { /* Team Number */}
+        { /* Team Number */}
         <Grid container>
           <Grid item xs={12}>
             <TextField
@@ -48,8 +68,32 @@ export default function ScoutForm() {
             />
           </Grid>
         </Grid>
+        { /* Event and Match */}
         <Grid item xs={12}><Divider /></Grid>
-      { /* Alliance */}
+        <Grid container>
+          <Grid item xs={6}>
+            <TextField
+              variant="outlined"
+              label="Event"
+              placeholder="Asheville District Event"
+              onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              value={scoutInfo.eventName}
+              fullWidth
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              variant="outlined"
+              label="Match Number"
+              placeholder="Q22"
+              onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              value={scoutInfo.match}
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+        <Grid item xs={12}><Divider /></Grid>
+        { /* Alliance */ }
         <Grid item xs={12}>
           <ToggleButtonGroup
             value={scoutInfo.alliance}
@@ -67,38 +111,15 @@ export default function ScoutForm() {
           </ToggleButtonGroup>
         </Grid>
         <Grid item xs={12}><Divider /></Grid>
-      { /* Scoring */}
+        { /* Scoring */ }
         <Grid item xs={12}>
-          <ScoringTable />
+          <ScoringTable ref={scoreRef} />
         </Grid>
-      { /* Driving Ability */}
+        { /* Submit */ }
         <Grid item xs={12}>
-          <Divider />
-          <h3 margin-bottom={1}>Drivig Ability: {scoutInfo.drivingAbility}%</h3>
-          <Slider value={scoutInfo.drivingAbility} defaultValue={scoutInfo.drivingAbility} step={10} marks min={0} max={100} onChange={(e,value) => setScoutInfo({...scoutInfo, drivingAbility: +value})}/>
-          <Divider />
-        </Grid>
-      { /* Drivetrain */}
-        <Grid item xs={12}>
-          <FormControl fullWidth>
-            <InputLabel id="drivetrain">Drivetrain</InputLabel>
-            <Select
-              value={scoutInfo.driveTrain}
-              label="Drivetrain"
-              onChange={e => setScoutInfo({...scoutInfo, driveTrain: e.target.value})}
-              fullWidth
-            >
-              <MenuItem value="">None</MenuItem>
-              <MenuItem value="Tank">Tank</MenuItem>
-              <MenuItem value="Swerve">Swerve</MenuItem>
-              <MenuItem value="Mechanum">Mechanum</MenuItem>
-              <MenuItem value="Monstrosity">Monstrosity</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>
-      { /* Submit */}
-        <Grid item xs={12}>
-          <Button sx={{minHeight: 50}} variant="contained" color="success" fullWidth>Submit</Button>
+          <Button sx={{minHeight: 50}} variant="contained" color="success" fullWidth
+            onClick={submitReport}
+          >Submit</Button>
         </Grid>
       </Grid>
     </React.Fragment>

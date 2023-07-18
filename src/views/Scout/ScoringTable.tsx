@@ -1,7 +1,11 @@
 import { Button, ButtonGroup, Card, CardActionArea, Divider, FilledInput, FormControl, FormControlLabel, FormLabel, Grid, Icon, IconButton, Input, InputAdornment, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
 import { styled } from '@mui/material/styles'
-import { useEffect, useState } from "react"
+import { Ref, forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { Add, Remove } from '@mui/icons-material';
+
+export interface RefObject {
+  getScoreData: () => ScoreData
+}
 
 const CountText = styled(TextField)({
   minWidth: 280, 
@@ -68,6 +72,52 @@ type Intakes = {
   floor_missed: number
 }
 
+type ScoreData = {
+  autonomous_game_pieces: number,
+  autonomous_game_pieces_missed: number,
+  auto_charging: ChargingMode,
+  high_cone_1: boolean,
+  high_cube_2: boolean,
+  high_cone_3: boolean,
+  high_cone_4: boolean,
+  high_cube_5: boolean,
+  high_cone_6: boolean,
+  high_cone_7: boolean,
+  high_cube_8: boolean,
+  high_cone_9: boolean,
+  mid_cone_1: boolean,
+  mid_cube_2: boolean,
+  mid_cone_3: boolean,
+  mid_cone_4: boolean,
+  mid_cube_5: boolean,
+  mid_cone_6: boolean,
+  mid_cone_7: boolean,
+  mid_cube_8: boolean,
+  mid_cone_9: boolean,
+  low_hybrid_1: boolean,
+  low_hybrid_2: boolean,
+  low_hybrid_3: boolean,
+  low_hybrid_4: boolean,
+  low_hybrid_5: boolean,
+  low_hybrid_6: boolean,
+  low_hybrid_7: boolean,
+  low_hybrid_8: boolean,
+  low_hybrid_9: boolean,
+  miss_cone_high: number,
+  miss_cone_mid: number,
+  miss_cone_low: number,
+  miss_cube_high: number,
+  miss_cube_mid: number,
+  miss_cube_low: number,
+  intake_single: number,
+  intake_double: number,
+  intake_floor: number,
+  intake_single_miss: number,
+  intake_double_miss: number,
+  intake_floor_miss: number,
+  endgame_charging: ChargingMode
+}
+
 enum ChargingMode {
   None,
   Community, // Taxied in Auto, Parked in Endgame
@@ -80,7 +130,7 @@ type DockingState = {
   endgame: ChargingMode
 }
 
-export default function ScoringTable() {
+const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
   const [totalScore, setTotalScore] = useState(0)
   const [autonomousGamePieces, setAutonomousGamePiece] = useState(0)
   const [autonomousGamePiecesMissed, setAutonomousGamePieceMissed] = useState(0)
@@ -169,6 +219,56 @@ export default function ScoringTable() {
   useEffect(() => {
     setTotalScore(calcScore())
   }, [score, autonomousGamePieces, dockingState])
+
+  useImperativeHandle(_ref, () => ({ getScoreData }))
+
+  function getScoreData() {
+    return {
+      autonomous_game_pieces: autonomousGamePieces,
+      autonomous_game_pieces_missed: autonomousGamePiecesMissed,
+      auto_charging: dockingState.autonomous,
+      high_cone_1: score.cone_1_1,
+      high_cube_2: score.cube_1_2,
+      high_cone_3: score.cone_1_3,
+      high_cone_4: score.cone_1_4,
+      high_cube_5: score.cube_1_5,
+      high_cone_6: score.cone_1_6,
+      high_cone_7: score.cone_1_7,
+      high_cube_8: score.cube_1_8,
+      high_cone_9: score.cone_1_9,
+      mid_cone_1: score.cone_2_1,
+      mid_cube_2: score.cube_2_2,
+      mid_cone_3: score.cone_2_3,
+      mid_cone_4: score.cone_2_4,
+      mid_cube_5: score.cube_2_5,
+      mid_cone_6: score.cone_2_6,
+      mid_cone_7: score.cone_2_7,
+      mid_cube_8: score.cube_2_8,
+      mid_cone_9: score.cone_2_9,
+      low_hybrid_1: score.cobe_3_1,
+      low_hybrid_2: score.cobe_3_2,
+      low_hybrid_3: score.cobe_3_3,
+      low_hybrid_4: score.cobe_3_4,
+      low_hybrid_5: score.cobe_3_5,
+      low_hybrid_6: score.cobe_3_6,
+      low_hybrid_7: score.cobe_3_7,
+      low_hybrid_8: score.cobe_3_8,
+      low_hybrid_9: score.cobe_3_9,
+      miss_cone_high: misses.cone_high,
+      miss_cone_mid: misses.cone_mid,
+      miss_cone_low: misses.cone_low,
+      miss_cube_high: misses.cube_high,
+      miss_cube_mid: misses.cube_mid,
+      miss_cube_low: misses.cube_low,
+      intake_single: intakes.single_grabbed,
+      intake_double: intakes.double_grabbed,
+      intake_floor: intakes.floor_grabbed,
+      intake_single_miss: intakes.single_missed,
+      intake_double_miss: intakes.double_missed,
+      intake_floor_miss: intakes.floor_missed,
+      endgame_charging: dockingState.endgame
+    } as ScoreData
+  }
 
   return (
     <Grid container>
@@ -567,4 +667,6 @@ export default function ScoringTable() {
       </Grid>
     </Grid>
   )
-}
+})
+
+export default ScoringTable
