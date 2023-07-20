@@ -14,27 +14,32 @@ type Report = {
   event: string,
   match: string,
   scouted_team: number,
-  alliance: number
+  alliance: string,
+  total_score: number
 }
+
+
 
 export default function TeamsList() {
   const [reports, setReports] = useState<Report[]>([])
 
   useEffect(() => {
-    if(process.env.REACT_APP_ENVIRONMENT === 'local') {
-      // setReports()
-    } else {
-      const getReports = async () => {
-        let headers: HeadersInit = new Headers()
-        let response = await fetch('https://fnc-recon-api-avxirbvnfa-ue.a.run.app/reports', {
+    const getReports = async () => {
+      let endpoint = ""
+      if(process.env.REACT_APP_ENVIRONMENT === 'local') {
+        endpoint = "/api/v1/reports"
+      }
+      try {
+        let response = await fetch(endpoint, {
           method: 'GET'
         })
         setReports(await response.json())
+      } catch (e) {
+        console.log(e)
       }
-
-      getReports()
     }
-  }, [reports])
+    getReports()
+  }, [])
 
   return (
     <React.Fragment>
@@ -46,7 +51,8 @@ export default function TeamsList() {
             <TableCell>Team</TableCell>
             <TableCell>Event</TableCell>
             <TableCell>Match</TableCell>
-            <TableCell align="right">Alliance</TableCell>
+            <TableCell>Alliance</TableCell>
+            <TableCell align="right">Score</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -56,11 +62,16 @@ export default function TeamsList() {
               <TableCell>{row.scouted_team}</TableCell>
               <TableCell>{row.event}</TableCell>
               <TableCell>{row.match}</TableCell>
-              <TableCell align="right">{`${row.alliance}`}</TableCell>
+              <TableCell>{row.alliance}</TableCell>
+              <TableCell align="right">{`${row.total_score}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </React.Fragment>
   )
+}
+
+function componentDidMount() {
+  throw new Error('Function not implemented.')
 }

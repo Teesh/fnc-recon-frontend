@@ -31,24 +31,32 @@ export default function ScoutForm() {
   }
 
   const submitReport = async () => {
-    let endpoint = "/api/v1"
+    let endpoint
+    if (process.env.REACT_APP_ENVIRONMENT === 'local') {
+      endpoint = "/api/v1/reports"
+    } else {
+      return
+    }
+    let body = {
+      reporting_team: process.env.REACT_APP_TEAM_NUMBER,
+      alliance: scoutInfo.alliance,
+      year: 2023,
+      event: scoutInfo.eventName,
+      match: scoutInfo.match,
+      scouted_team: scoutInfo.teamNumber,
+      ...scoreRef.current?.getScoreData()
+    }
     let requestOptions = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        team_number: '4561',
-        alliance: scoutInfo.alliance,
-        year: '2023',
-        event: scoutInfo.eventName,
-        match: scoutInfo.match,
-        scouted_team: scoutInfo.teamNumber,
-        ...scoreRef.current?.getScoreData()
-      })
+      headers: { 
+        'content-type': 'application/json' 
+      },
+      body: JSON.stringify(body)
     }
-    console.log(requestOptions)
+    console.log(body)
     try {
       let response = await fetch(endpoint, requestOptions)
-      console.log(response)
+      console.log(await response.json())
     } catch (e) {
       console.log(e)
     }

@@ -73,6 +73,7 @@ type Intakes = {
 }
 
 type ScoreData = {
+  total_score: number
   autonomous_game_pieces: number,
   autonomous_game_pieces_missed: number,
   auto_charging: ChargingMode,
@@ -224,6 +225,7 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
 
   function getScoreData() {
     return {
+      total_score: totalScore,
       autonomous_game_pieces: autonomousGamePieces,
       autonomous_game_pieces_missed: autonomousGamePiecesMissed,
       auto_charging: dockingState.autonomous,
@@ -327,6 +329,7 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
         <TextField
           variant="outlined"
           label="Points"
+          type="number"
           value={totalScore}
           fullWidth
           InputProps={{
