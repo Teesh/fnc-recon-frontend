@@ -22,8 +22,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+const app = initializeApp(firebaseConfig)
+// eslint-disable-next-line  @typescript-eslint/no-unused-vars
+const analytics = getAnalytics(app)
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

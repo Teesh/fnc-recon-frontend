@@ -71,7 +71,3 @@ export default function TeamsList() {
     </React.Fragment>
   )
 }
-
-function componentDidMount() {
-  throw new Error('Function not implemented.')
-}

@@ -11,11 +11,9 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import IconButton from '@mui/material/IconButton'
 import Badge from '@mui/material/Badge'
-import Link from '@mui/material/Link'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import NotificationsIcon from '@mui/icons-material/Notifications'
-import GitHubIcon from '@mui/icons-material/GitHub'
 import { mainListItems } from '../components/MenuItems/listItems'
 import Dashboard from './Dashboard'
 import Teams from './Teams'
@@ -23,21 +21,6 @@ import Events from './Events'
 import Reports from './Reports'
 import Scout from './Scout'
 import About from './About'
-
-function Source(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Github  '}
-      <GitHubIcon fontSize="small" />
-      {' View Source and Contribute:  '}
-      <Link color="inherit" href="https://github.com/Teesh/fnc-recon-frontend" target="_blank" rel="noopener">
-         FNC United
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
 
 const drawerWidth: number = 240
 

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, CardActionArea, Divider, FilledInput, FormControl, FormControlLabel, FormLabel, Grid, Icon, IconButton, Input, InputAdornment, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActionArea, Divider, FilledInput, FormControl, FormControlLabel, FormLabel, Grid, Icon, IconButton, InputAdornment, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from "@mui/material"
 import { styled } from '@mui/material/styles'
 import { Ref, forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { Add, Remove } from '@mui/icons-material';
@@ -190,34 +190,33 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
     floor_missed: 0
   })
 
-  const calcScore = () => {
-    let tempScore = 0
-    let linkCounter = 0
-    Object.values(score).forEach((value: boolean, index: number) => {
-      if (index < 9 && value) tempScore += 5
-      if (index >= 9 && index < 18 && value) tempScore += 3
-      if (index >= 18 && value) tempScore += 2
-      if (index === 9 || index === 18) linkCounter = 0
-      value ? linkCounter++ : linkCounter = 0
-      if (linkCounter === 3) {
-        tempScore += 5
-        linkCounter = 0
-      }
-    })
-    
-    tempScore += autonomousGamePieces
-
-    if(dockingState.autonomous === ChargingMode.Community) tempScore += 3
-    if(dockingState.autonomous === ChargingMode.Docked) tempScore += 8
-    if(dockingState.autonomous === ChargingMode.Engaged) tempScore += 12
-    if(dockingState.endgame === ChargingMode.Community) tempScore += 2
-    if(dockingState.endgame === ChargingMode.Docked) tempScore += 6
-    if(dockingState.endgame === ChargingMode.Engaged) tempScore += 10
-
-    return tempScore
-  }
-
   useEffect(() => {
+    const calcScore = () => {
+      let tempScore = 0
+      let linkCounter = 0
+      Object.values(score).forEach((value: boolean, index: number) => {
+        if (index < 9 && value) tempScore += 5
+        if (index >= 9 && index < 18 && value) tempScore += 3
+        if (index >= 18 && value) tempScore += 2
+        if (index === 9 || index === 18) linkCounter = 0
+        value ? linkCounter++ : linkCounter = 0
+        if (linkCounter === 3) {
+          tempScore += 5
+          linkCounter = 0
+        }
+      })
+      
+      tempScore += autonomousGamePieces
+  
+      if(dockingState.autonomous === ChargingMode.Community) tempScore += 3
+      if(dockingState.autonomous === ChargingMode.Docked) tempScore += 8
+      if(dockingState.autonomous === ChargingMode.Engaged) tempScore += 12
+      if(dockingState.endgame === ChargingMode.Community) tempScore += 2
+      if(dockingState.endgame === ChargingMode.Docked) tempScore += 6
+      if(dockingState.endgame === ChargingMode.Engaged) tempScore += 10
+  
+      return tempScore
+    }
     setTotalScore(calcScore())
   }, [score, autonomousGamePieces, dockingState])
 
