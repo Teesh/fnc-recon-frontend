@@ -1,12 +1,12 @@
 import './App.css'
-import Main from './views'
+import Scout from './views/Scout'
 import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Main />
+        <Scout />
       </BrowserRouter>
     </div>
   );

@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Button, Divider, Grid, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
 import { useRef, useState } from 'react'
 import ScoringTable, { RefObject } from './ScoringTable'
+import { addReport } from 'db/connector'
 
 type ScoutReport = {
   teamNumber: string,
@@ -31,12 +32,7 @@ export default function ScoutForm() {
   }
 
   const submitReport = async () => {
-    let endpoint
-    if (process.env.REACT_APP_ENVIRONMENT === 'local') {
-      endpoint = "/api/v1/reports"
-    } else {
-      return
-    }
+    if (!scoreRef.current) return
     let body = {
       reporting_team: process.env.REACT_APP_TEAM_NUMBER,
       alliance: scoutInfo.alliance,
@@ -44,22 +40,9 @@ export default function ScoutForm() {
       event: scoutInfo.eventName,
       match: scoutInfo.match,
       scouted_team: scoutInfo.teamNumber,
-      ...scoreRef.current?.getScoreData()
+      ...scoreRef.current.getScoreData()
     }
-    let requestOptions = {
-      method: 'POST',
-      headers: { 
-        'content-type': 'application/json' 
-      },
-      body: JSON.stringify(body)
-    }
-    console.log(body)
-    try {
-      let response = await fetch(endpoint, requestOptions)
-      console.log(await response.json())
-    } catch (e) {
-      console.log(e)
-    }
+    addReport(body)
   }
 
   return (

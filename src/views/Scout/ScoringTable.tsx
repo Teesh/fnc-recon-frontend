@@ -72,7 +72,7 @@ type Intakes = {
   floor_missed: number
 }
 
-type ScoreData = {
+export type ScoreData = {
   total_score: number
   autonomous_game_pieces: number,
   autonomous_game_pieces_missed: number,
