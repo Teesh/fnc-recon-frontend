@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app"
-import { getFirestore, getDocs, collection, doc, setDoc } from "firebase/firestore"
-import { ScoreData } from "views/Scout/ScoringTable"
+import { getFirestore, getDocs, collection, doc, setDoc, getCountFromServer } from "firebase/firestore"
+import { ScoreData } from "views/Scout/ScoutForm"
 import { v4 as uuidv4 } from 'uuid'
 
 const firebaseConfig = {
@@ -32,11 +32,9 @@ type NewReport = {
 } | ScoreData
 
 export const testDB = async () => {
-  console.log("Hello")
-  const querySnapshot = await getDocs(collection(db, 'fnc-united-db-dev'))
-  querySnapshot.forEach((doc) => {
-    console.log(`${doc.id} => ${doc.data()}`);
-  })
+  console.log("Connecting to DB")
+  let snapshot = await getCountFromServer(collection(db, 'fnc-united-db-dev'))
+  console.log(`${snapshot.data().count} entries found`)
 }
 
 export const addReport = async (value: NewReport) => {

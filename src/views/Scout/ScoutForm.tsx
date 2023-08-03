@@ -1,8 +1,8 @@
 import * as React from 'react'
-import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material'
-import { useRef, useState } from 'react'
-import ScoringTable, { RefObject } from './ScoringTable'
+import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { addReport } from 'db/connector'
+import ScoringTable from './ScoringTable'
 
 type ScoutReport = {
   teamNumber: string,
@@ -11,120 +11,156 @@ type ScoutReport = {
   match: string
 }
 
-type ScoringGrid = {
-  cone_1_1: ScoreMode,
-  cube_1_2: ScoreMode,
-  cone_1_3: ScoreMode,
-  cone_1_4: ScoreMode,
-  cube_1_5: ScoreMode,
-  cone_1_6: ScoreMode,
-  cone_1_7: ScoreMode,
-  cube_1_8: ScoreMode,
-  cone_1_9: ScoreMode,
+export type ScoringGrid = {
+  cone_1_1: boolean,
+  cube_1_2: boolean,
+  cone_1_3: boolean,
+  cone_1_4: boolean,
+  cube_1_5: boolean,
+  cone_1_6: boolean,
+  cone_1_7: boolean,
+  cube_1_8: boolean,
+  cone_1_9: boolean,
 
-  cone_2_1: ScoreMode,
-  cube_2_2: ScoreMode,
-  cone_2_3: ScoreMode,
-  cone_2_4: ScoreMode,
-  cube_2_5: ScoreMode,
-  cone_2_6: ScoreMode,
-  cone_2_7: ScoreMode,
-  cube_2_8: ScoreMode,
-  cone_2_9: ScoreMode,
+  cone_2_1: boolean,
+  cube_2_2: boolean,
+  cone_2_3: boolean,
+  cone_2_4: boolean,
+  cube_2_5: boolean,
+  cone_2_6: boolean,
+  cone_2_7: boolean,
+  cube_2_8: boolean,
+  cone_2_9: boolean,
 
-  cobe_3_1: ScoreMode,
-  cobe_3_2: ScoreMode,
-  cobe_3_3: ScoreMode,
-  cobe_3_4: ScoreMode,
-  cobe_3_5: ScoreMode,
-  cobe_3_6: ScoreMode,
-  cobe_3_7: ScoreMode,
-  cobe_3_8: ScoreMode,
-  cobe_3_9: ScoreMode,
+  cobe_3_1: boolean,
+  cobe_3_2: boolean,
+  cobe_3_3: boolean,
+  cobe_3_4: boolean,
+  cobe_3_5: boolean,
+  cobe_3_6: boolean,
+  cobe_3_7: boolean,
+  cobe_3_8: boolean,
+  cobe_3_9: boolean
 }
 
+export type ScoreSheet = {
+  grid: ScoringGrid,
 
-type MissedScores = {
-  cone_high: number,
-  cone_mid: number,
-  cone_low: number,
-  cube_high: number,
-  cube_mid: number,
-  cube_low: number
-}
+  misses: {
+    cone_high: number,
+    cone_mid: number,
+    cone_low: number,
+    cube_high: number,
+    cube_mid: number,
+    cube_low: number
+  }
 
-type Intakes = {
-  single_grabbed: number,
-  single_missed: number,
-  double_grabbed: number,
-  double_missed: number,
-  floor_grabbed: number,
-  floor_missed: number
-}
+  intakes: {
+    single_grabbed: number,
+    single_missed: number,
+    double_grabbed: number,
+    double_missed: number,
+    floor_grabbed: number,
+    floor_missed: number
+  }
 
-export type ScoreData = {
-  total_score: number
-  autonomous_game_pieces: number,
-  autonomous_game_pieces_missed: number,
-  auto_charging: ChargingMode,
-  high_cone_1: boolean,
-  high_cube_2: boolean,
-  high_cone_3: boolean,
-  high_cone_4: boolean,
-  high_cube_5: boolean,
-  high_cone_6: boolean,
-  high_cone_7: boolean,
-  high_cube_8: boolean,
-  high_cone_9: boolean,
-  mid_cone_1: boolean,
-  mid_cube_2: boolean,
-  mid_cone_3: boolean,
-  mid_cone_4: boolean,
-  mid_cube_5: boolean,
-  mid_cone_6: boolean,
-  mid_cone_7: boolean,
-  mid_cube_8: boolean,
-  mid_cone_9: boolean,
-  low_hybrid_1: boolean,
-  low_hybrid_2: boolean,
-  low_hybrid_3: boolean,
-  low_hybrid_4: boolean,
-  low_hybrid_5: boolean,
-  low_hybrid_6: boolean,
-  low_hybrid_7: boolean,
-  low_hybrid_8: boolean,
-  low_hybrid_9: boolean,
-  miss_cone_high: number,
-  miss_cone_mid: number,
-  miss_cone_low: number,
-  miss_cube_high: number,
-  miss_cube_mid: number,
-  miss_cube_low: number,
-  intake_single: number,
-  intake_double: number,
-  intake_floor: number,
-  intake_single_miss: number,
-  intake_double_miss: number,
-  intake_floor_miss: number,
-  endgame_charging: ChargingMode
+  charging: ChargingMode
 }
 
 enum ChargingMode {
   None,
+  Attempted,
   Community, // Taxied in Auto, Parked in Endgame
   Docked,
   Engaged
 }
 
-enum ScoreMode {
-  None,
-  Auto,
-  Teleop
+let defaultScore: ScoreSheet = {
+  grid: {
+    cone_1_1: false,
+    cube_1_2: false,
+    cone_1_3: false,
+    cone_1_4: false,
+    cube_1_5: false,
+    cone_1_6: false,
+    cone_1_7: false,
+    cube_1_8: false,
+    cone_1_9: false,
+
+    cone_2_1: false,
+    cube_2_2: false,
+    cone_2_3: false,
+    cone_2_4: false,
+    cube_2_5: false,
+    cone_2_6: false,
+    cone_2_7: false,
+    cube_2_8: false,
+    cone_2_9: false,
+
+    cobe_3_1: false,
+    cobe_3_2: false,
+    cobe_3_3: false,
+    cobe_3_4: false,
+    cobe_3_5: false,
+    cobe_3_6: false,
+    cobe_3_7: false,
+    cobe_3_8: false,
+    cobe_3_9: false,
+  },
+
+  misses: {
+    cone_high: 0,
+    cone_mid: 0,
+    cone_low: 0,
+    cube_high: 0,
+    cube_mid: 0,
+    cube_low: 0
+  },
+
+  intakes: {
+    single_grabbed: 0,
+    single_missed: 0,
+    double_grabbed: 0,
+    double_missed: 0,
+    floor_grabbed: 0,
+    floor_missed: 0
+  },
+
+  charging: ChargingMode.None
 }
 
-export default function ScoutForm() {
-  const scoreRef = useRef<RefObject>(null)
-  
+export type ScoreData = {
+  total_score: number
+  auto_score: ScoreSheet,
+  tele_score: ScoreSheet
+}
+
+interface TabPanelProps {
+  children?: React.ReactNode
+  index: number
+  value: number
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  )
+}
+
+export default function ScoutForm() {  
   const [scoutInfo, setScoutInfo] = useState<ScoutReport>({
     teamNumber: '',
     alliance: '',
@@ -142,93 +178,58 @@ export default function ScoutForm() {
     })
   }
 
-  const [score, setScore] = useState<ScoringGrid>({
-    cone_1_1: ScoreMode.None,
-    cube_1_2: ScoreMode.None,
-    cone_1_3: ScoreMode.None,
-    cone_1_4: ScoreMode.None,
-    cube_1_5: ScoreMode.None,
-    cone_1_6: ScoreMode.None,
-    cone_1_7: ScoreMode.None,
-    cube_1_8: ScoreMode.None,
-    cone_1_9: ScoreMode.None,
-  
-    cone_2_1: ScoreMode.None,
-    cube_2_2: ScoreMode.None,
-    cone_2_3: ScoreMode.None,
-    cone_2_4: ScoreMode.None,
-    cube_2_5: ScoreMode.None,
-    cone_2_6: ScoreMode.None,
-    cone_2_7: ScoreMode.None,
-    cube_2_8: ScoreMode.None,
-    cone_2_9: ScoreMode.None,
-  
-    cobe_3_1: ScoreMode.None,
-    cobe_3_2: ScoreMode.None,
-    cobe_3_3: ScoreMode.None,
-    cobe_3_4: ScoreMode.None,
-    cobe_3_5: ScoreMode.None,
-    cobe_3_6: ScoreMode.None,
-    cobe_3_7: ScoreMode.None,
-    cobe_3_8: ScoreMode.None,
-    cobe_3_9: ScoreMode.None,
-  })
+  const [totalScore, setTotalScore] = useState(0)
+  const [autoScore, setAutoScore] = useState<ScoreSheet>(defaultScore)
+  const [teleScore, setTeleScore] = useState<ScoreSheet>(defaultScore)
 
-  const [ misses, setMisses ] = useState<MissedScores>({
-    cone_high: 0,
-    cone_mid: 0,
-    cone_low: 0,
-    cube_high: 0,
-    cube_mid: 0,
-    cube_low: 0
-  })
-
-  const [intakes, setIntakes ] = useState<Intakes>({
-    single_grabbed: 0,
-    single_missed: 0,
-    double_grabbed: 0,
-    double_missed: 0,
-    floor_grabbed: 0,
-    floor_missed: 0
-  })
+  useEffect(() => {
+    const calcScore = () => {
+      let tempScore = 0
+      Object.values(autoScore.grid).forEach((value: boolean, index: number) => {
+        if (index < 9 && value) tempScore += 6
+        if (index >= 9 && index < 18 && value) tempScore += 4
+        if (index >= 18 && value) tempScore += 3
+      })
+      Object.values(teleScore.grid).forEach((value: boolean, index: number) => {
+        if (index < 9 && value) tempScore += 5
+        if (index >= 9 && index < 18 && value) tempScore += 3
+        if (index >= 18 && value) tempScore += 2
+      })
+      let linkCounter = 0
+      for (let i = 0; i < 27; i++) {
+        if (Object.values(autoScore.grid)[i] || Object.values(teleScore.grid)[i]) linkCounter++
+        if (linkCounter === 3) {
+          tempScore += 5
+          linkCounter = 0
+        }
+        if (i === 8 || i === 17) linkCounter = 0
+      }
+  
+      if(autoScore.charging === ChargingMode.Community) tempScore += 3
+      else if(autoScore.charging === ChargingMode.Docked) tempScore += 8
+      else if(autoScore.charging === ChargingMode.Engaged) tempScore += 12
+      if(teleScore.charging === ChargingMode.Community) tempScore += 2
+      else if(teleScore.charging === ChargingMode.Docked) tempScore += 6
+      else if(teleScore.charging === ChargingMode.Engaged) tempScore += 10
+  
+      return tempScore
+    }
+    setTotalScore(calcScore())
+  }, [autoScore, teleScore])
 
   const submitReport = async () => {
-    if (!scoreRef.current) return
+    if (!process.env.REACT_APP_TEAM_NUMBER) return
     let body = {
       reporting_team: process.env.REACT_APP_TEAM_NUMBER,
       alliance: scoutInfo.alliance,
       event: scoutInfo.eventName,
       match: scoutInfo.match,
       scouted_team: scoutInfo.teamNumber,
-      ...scoreRef.current.getScoreData()
+      auto_score: autoScore,
+      tele_score: teleScore
     }
     await addReport(body)
     alert("Report added!")
-  }
-  
-  interface TabPanelProps {
-    children?: React.ReactNode
-    index: number
-    value: number
-  }
-  
-  function CustomTabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props
-  
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    )
   }
 
   const [value, setValue] = React.useState(0);
@@ -306,7 +307,7 @@ export default function ScoutForm() {
             variant="outlined"
             label="Points"
             type="number"
-            value={0}
+            value={totalScore}
             fullWidth
             InputProps={{
               readOnly: true
@@ -321,10 +322,10 @@ export default function ScoutForm() {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <ScoringTable ref={scoreRef} />
+            <ScoringTable key={0} score={autoScore} setScore={setAutoScore}/>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <ScoringTable />
+            <ScoringTable key={1} score={teleScore} setScore={setTeleScore} autoScore={autoScore} teleop/>
           </CustomTabPanel>
         </Box>
         { /* Submit */ }
