@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Card, CardActionArea, Divider, FilledInput, FormControl, FormControlLabel, FormLabel, Grid, Icon, IconButton, InputAdornment, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableRow, TextField } from "@mui/material"
+import { Button, ButtonGroup, Card, CardActionArea, Divider, FilledInput, FormControl, FormControlLabel, FormLabel, Grid, Icon, IconButton, InputAdornment, Paper, Radio, RadioGroup, Table, TableBody, TableCell, TableContainer, TableRow, TextField, ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { styled } from '@mui/material/styles'
 import { Ref, forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { Add, Remove } from '@mui/icons-material';
@@ -273,69 +273,7 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
 
   return (
     <Grid container>
-      <Grid item xs={12} mb={2}>
-        <h3>Autonomous</h3>
-      </Grid>
-      <Grid item xs={12} mb={2}>
-        <ButtonGroup fullWidth>
-          <Button variant="contained" color="success" onClick={e => setAutonomousGamePiece(autonomousGamePieces+1)}>+</Button>
-          <CountText 
-            variant="outlined"
-            label="Autonomous Game Pieces"
-            sx={{textAlign: 'center'}}
-            value={autonomousGamePieces}
-            InputProps={{
-              readOnly: true
-            }}
-          ></CountText>
-          <Button variant="contained" color="error" onClick={e => setAutonomousGamePiece(autonomousGamePieces === 0 ? 0 : autonomousGamePieces-1)}>-</Button>
-        </ButtonGroup>
-      </Grid>
-      <Grid item xs={12} mb={2}>
-        <ButtonGroup fullWidth>
-          <Button variant="contained" color="success" onClick={e => setAutonomousGamePieceMissed(autonomousGamePiecesMissed+1)}>+</Button>
-          <CountText 
-            variant="outlined"
-            label="Autonomous Game Pieces Missed"
-            sx={{textAlign: 'center'}}
-            value={autonomousGamePiecesMissed}
-            InputProps={{
-              readOnly: true
-            }}
-          ></CountText>
-          <Button variant="contained" color="error" onClick={e => setAutonomousGamePieceMissed(autonomousGamePiecesMissed === 0 ? 0 : autonomousGamePiecesMissed-1)}>-</Button>
-        </ButtonGroup>
-      </Grid>
-      <Grid item xs={12} mb={2}>
-        <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">Docking</FormLabel>
-          <RadioGroup
-            onChange={e => setDockingState({...dockingState, autonomous: +e.target.value})}
-            row
-          >
-            <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="end"/>
-            <FormControlLabel control={<Radio value={1} />} label="Taxied" labelPlacement="end"/>
-            <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="end"/>
-            <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="end"/>
-          </RadioGroup>
-        </FormControl>
-      </Grid>
-      <Grid item xs={12} mb={2}>
-        <Divider />
-        <h3>Teleop</h3>
-      </Grid>
-      <Grid item xs={12} mb={2}>
-        <TextField
-          variant="outlined"
-          label="Points"
-          type="number"
-          value={totalScore}
-          fullWidth
-          InputProps={{
-            readOnly: true
-          }}
-        />
-      </Grid>
+      
       <Grid container spacing={0} mb={2}>
       { 
         Object.values(score).map((value: boolean, index: number) => {
@@ -375,12 +313,11 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
             <TableBody>
               <TableRow>
                 <TableCell>Misses</TableCell>
-                <TableCell align="center">High</TableCell>
-                <TableCell align="center">Mid</TableCell>
-                <TableCell align="center">Low</TableCell>
+                <TableCell align="center">Cones</TableCell>
+                <TableCell align="center">Cubes</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Cones</TableCell>
+                <TableCell>High</TableCell>
                 <TableCell align="center">
                  <FilledInput
                     inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -404,6 +341,29 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
                 <TableCell align="center">
                   <FilledInput
                     inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cube_high}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cube_high: misses.cube_high+1})}}
+                        ><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cube_high: Math.max(misses.cube_high-1, 0)})}}
+                        ><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Mid</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
                     value={misses.cone_mid}
                     startAdornment={
                       <InputAdornment position="start">
@@ -424,49 +384,6 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
                 <TableCell align="center">
                   <FilledInput
                     inputProps={{min: 0, style: { textAlign: 'center' }}}
-                    value={misses.cone_low}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <IconButton edge="start"
-                          onClick={e => {setMisses({...misses, cone_low: misses.cone_low+1})}}
-                        ><Add /></IconButton>
-                      </InputAdornment>
-                    }
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end"
-                          onClick={e => {setMisses({...misses, cone_low: Math.max(misses.cone_low-1, 0)})}}
-                        ><Remove /></IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Cubes</TableCell>
-                <TableCell align="center">
-                  <FilledInput
-                    inputProps={{min: 0, style: { textAlign: 'center' }}}
-                    value={misses.cube_high}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <IconButton edge="start"
-                          onClick={e => {setMisses({...misses, cube_high: misses.cube_high+1})}}
-                        ><Add /></IconButton>
-                      </InputAdornment>
-                    }
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end"
-                          onClick={e => {setMisses({...misses, cube_high: Math.max(misses.cube_high-1, 0)})}}
-                        ><Remove /></IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <FilledInput
-                    inputProps={{min: 0, style: { textAlign: 'center' }}}
                     value={misses.cube_mid}
                     startAdornment={
                       <InputAdornment position="start">
@@ -479,6 +396,29 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
                       <InputAdornment position="end">
                         <IconButton edge="end"
                           onClick={e => {setMisses({...misses, cube_mid: Math.max(misses.cube_mid-1, 0)})}}
+                        ><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Low</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={misses.cone_low}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"
+                          onClick={e => {setMisses({...misses, cone_low: misses.cone_low+1})}}
+                        ><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"
+                          onClick={e => {setMisses({...misses, cone_low: Math.max(misses.cone_low-1, 0)})}}
                         ><Remove /></IconButton>
                       </InputAdornment>
                     }
@@ -515,12 +455,11 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
             <TableBody>
               <TableRow>
                 <TableCell>Intakes</TableCell>
-                <TableCell align="center">Single</TableCell>
-                <TableCell align="center">Double</TableCell>
-                <TableCell align="center">Floor</TableCell>
+                <TableCell align="center">Grabbed</TableCell>
+                <TableCell align="center">Missed</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Grabbed</TableCell>
+                <TableCell>Single</TableCell>
                 <TableCell align="center">
                   <FilledInput
                     inputProps={{min: 0, style: { textAlign: 'center' }}}
@@ -544,6 +483,29 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
                 <TableCell align="center">
                   <FilledInput
                     inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.single_missed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, single_missed: intakes.single_missed+1})}}
+                        ><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, single_missed: Math.max(intakes.single_missed-1,0)})}}
+                        ><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Double</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
                     value={intakes.double_grabbed}
                     startAdornment={
                       <InputAdornment position="start">
@@ -564,49 +526,6 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
                 <TableCell align="center">
                   <FilledInput
                     inputProps={{min: 0, style: { textAlign: 'center' }}}
-                    value={intakes.floor_grabbed}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <IconButton edge="start"
-                          onClick={e => {setIntakes({...intakes, floor_grabbed: intakes.floor_grabbed+1})}}
-                        ><Add /></IconButton>
-                      </InputAdornment>
-                    }
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end"
-                          onClick={e => {setIntakes({...intakes, floor_grabbed: Math.max(intakes.floor_grabbed-1,0)})}}
-                        ><Remove /></IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Missed</TableCell>
-                <TableCell align="center">
-                  <FilledInput
-                    inputProps={{min: 0, style: { textAlign: 'center' }}}
-                    value={intakes.single_missed}
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <IconButton edge="start"
-                          onClick={e => {setIntakes({...intakes, single_missed: intakes.single_missed+1})}}
-                        ><Add /></IconButton>
-                      </InputAdornment>
-                    }
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton edge="end"
-                          onClick={e => {setIntakes({...intakes, single_missed: Math.max(intakes.single_missed-1,0)})}}
-                        ><Remove /></IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </TableCell>
-                <TableCell align="center">
-                  <FilledInput
-                    inputProps={{min: 0, style: { textAlign: 'center' }}}
                     value={intakes.double_missed}
                     startAdornment={
                       <InputAdornment position="start">
@@ -619,6 +538,29 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
                       <InputAdornment position="end">
                         <IconButton edge="end"
                           onClick={e => {setIntakes({...intakes, double_missed: Math.max(intakes.double_missed-1,0)})}}
+                        ><Remove /></IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Floor</TableCell>
+                <TableCell align="center">
+                  <FilledInput
+                    inputProps={{min: 0, style: { textAlign: 'center' }}}
+                    value={intakes.floor_grabbed}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <IconButton edge="start"
+                          onClick={e => {setIntakes({...intakes, floor_grabbed: intakes.floor_grabbed+1})}}
+                        ><Add /></IconButton>
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton edge="end"
+                          onClick={e => {setIntakes({...intakes, floor_grabbed: Math.max(intakes.floor_grabbed-1,0)})}}
                         ><Remove /></IconButton>
                       </InputAdornment>
                     }
@@ -651,21 +593,20 @@ const ScoringTable = forwardRef((props, _ref: Ref<RefObject>) => {
       </Grid>
       <Grid item xs={12} mb={2}>
         <Divider />
-        <h3>Endgame</h3>
       </Grid>
       <Grid item xs={12} mb={2}>
-        <FormControl>
-          <FormLabel id="demo-row-radio-buttons-group-label">Docking</FormLabel>
-          <RadioGroup
-            onChange={e => setDockingState({...dockingState, endgame: +e.target.value})}
-            row
+        <ToggleButtonGroup
+            value={dockingState.endgame}
+            exclusive
+            size="large"
+            onChange={(e,v) => setDockingState({...dockingState, endgame: v})}
+            fullWidth
           >
-            <FormControlLabel control={<Radio value={0} />} label="None" labelPlacement="end"/>
-            <FormControlLabel control={<Radio value={1} />} label="Parked" labelPlacement="end"/>
-            <FormControlLabel control={<Radio value={2} />} label="Docked" labelPlacement="end"/>
-            <FormControlLabel control={<Radio value={3} />} label="Engaged" labelPlacement="end"/>
-          </RadioGroup>
-        </FormControl>
+            <ToggleButton color="error" value="none">None</ToggleButton>
+            <ToggleButton color="secondary" value="parked">Parked</ToggleButton>
+            <ToggleButton color="info" value="docked">Docked</ToggleButton>
+            <ToggleButton color="success" value="engaged">Engaged</ToggleButton>
+          </ToggleButtonGroup>
       </Grid>
     </Grid>
   )
