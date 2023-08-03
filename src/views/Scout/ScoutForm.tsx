@@ -36,13 +36,13 @@ export default function ScoutForm() {
     let body = {
       reporting_team: process.env.REACT_APP_TEAM_NUMBER,
       alliance: scoutInfo.alliance,
-      year: 2023,
       event: scoutInfo.eventName,
       match: scoutInfo.match,
       scouted_team: scoutInfo.teamNumber,
       ...scoreRef.current.getScoreData()
     }
-    addReport(body)
+    await addReport(body)
+    alert("Report added!")
   }
 
   return (
