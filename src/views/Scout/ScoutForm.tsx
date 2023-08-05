@@ -67,7 +67,7 @@ export type ScoreSheet = {
   charging: ChargingMode
 }
 
-enum ChargingMode {
+export enum ChargingMode {
   None,
   Attempted,
   Community, // Taxied in Auto, Parked in Endgame
@@ -195,6 +195,7 @@ export default function ScoutForm() {
         if (index >= 9 && index < 18 && value) tempScore += 3
         if (index >= 18 && value) tempScore += 2
       })
+      
       let linkCounter = 0
       for (let i = 0; i < 27; i++) {
         if (Object.values(autoScore.grid)[i] || Object.values(teleScore.grid)[i]) linkCounter++
@@ -218,7 +219,10 @@ export default function ScoutForm() {
   }, [autoScore, teleScore])
 
   const submitReport = async () => {
-    if (!process.env.REACT_APP_TEAM_NUMBER) return
+    if (!process.env.REACT_APP_TEAM_NUMBER) {
+      alert("Team Number missing in env file")
+      return
+    }
     let body = {
       reporting_team: process.env.REACT_APP_TEAM_NUMBER,
       alliance: scoutInfo.alliance,
