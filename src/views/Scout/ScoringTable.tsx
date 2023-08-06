@@ -1,7 +1,8 @@
 import {Card, CardActionArea, Divider, FilledInput, Grid, Icon, IconButton, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableRow, ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { styled } from '@mui/material/styles'
-import { Add, Remove } from '@mui/icons-material';
-import { ChargingMode, ScoreSheet, ScoringGrid } from "./ScoutForm";
+import { Add, Remove } from '@mui/icons-material'
+import { ChargingMode, ScoreSheet, ScoringGrid, GamePiece } from "./ScoutForm"
+import { type } from "os"
 
 const CobeCard = styled(Card)({
   borderRadius: 0,
@@ -9,49 +10,101 @@ const CobeCard = styled(Card)({
 })
 
 const CobeGrid = styled(Grid)({
-  width: 'calc(100% / 9)',
+  width: 'calc(100% / 3)',
 })
 
 type ScoringTableProps = {
   score: ScoreSheet
   autoScore?: ScoreSheet
   setScore: React.Dispatch<React.SetStateAction<ScoreSheet>>
+  flip?: boolean
   teleop?: boolean
 }
 
 export default function  ScoringTable(props: ScoringTableProps) {
+  const makeGridItem = (i: number, j: number, grid: any[]) => {
+    let gamePiece, color, shape, disabled = false
+    if (j > 2) {
+      gamePiece = 'cobe'
+    } else if (i === 2 || i === 5 || i === 8) {
+      gamePiece = 'cube'
+      color = 'purple'
+      shape = 'crop_square'
+    } else {
+      gamePiece = 'cone'
+      color = 'orange'
+      shape = 'change_history'
+    }
+
+    let key = `${gamePiece}_${j}_${i}`
+
+    if (j > 2) {
+      switch(props.score.grid[key as keyof ScoringGrid]) {
+        case 0: shape = 'radio_button_unchecked'
+          break
+        case 1: color = 'orange'
+          shape = 'change_history'
+          break
+        case 2: color = 'purple'
+          shape = 'crop_square'
+          break
+        default: shape = 'radio_button_unchecked'
+          break
+      }
+    }
+
+    if (props.autoScore?.grid[key as keyof ScoringGrid]) {
+      color = 'green'
+      disabled = true
+    }
+
+    grid.push({
+      i,
+      j,
+      key,
+      shape,
+      color,
+      disabled
+    })
+  }
+
+  const makeGrid = () => {
+    let grid: any[] = []
+    for (let i = 1; i <= 9; i++) {
+      if (props.flip) {
+        for (let j = 3; j >= 1; j--) {
+          makeGridItem(i, j, grid)
+        }
+      } else {
+        for (let j = 1; j <= 3; j++) {
+          makeGridItem(i, j, grid)
+        }
+      }
+    }
+    return grid
+  }
+
   return (
     <Grid container>
       <Grid container spacing={0} mb={2}>
-      { 
-        Object.values(props.score.grid).map((value: boolean, index: number) => {
-          let disabled = false
-          let i = Math.ceil((index + 1) / 9)
-          let j = (index) % 9 + 1
-          let gamePiece, color, shape
-          if (i > 2) {
-            gamePiece = 'cobe'
-            color = 'pink'
-            shape = 'radio_button_unchecked'
-          } else if (j === 2 || j === 5 || j === 8) {
-            gamePiece = 'cube'
-            color = 'purple'
-            shape = 'crop_square'
-          } else {
-            gamePiece = 'cone'
-            color = 'orange'
-            shape = 'change_history'
-          }
-
-          let key = `${gamePiece}_${i}_${j}`
-          if (props.autoScore?.grid[key as keyof ScoringGrid]) {
-            color = 'green'
-            disabled = true
-          }
+        <CobeGrid>
+          <CobeCard>{props.flip ? 'Hybrid' : 'High'}</CobeCard>
+        </CobeGrid>
+        <CobeGrid>
+          <CobeCard>Mid</CobeCard>
+        </CobeGrid>
+        <CobeGrid>
+          <CobeCard>{props.flip ? 'High' : 'Hybrid'}</CobeCard>
+        </CobeGrid>
+      {
+        makeGrid().map(({i, j, key, shape, color, disabled}) => {
           return (
             <CobeGrid item key={key}>
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
-                <CardActionArea onClick={e => props.setScore({...props.score, grid: { ...props.score.grid, [key]: !props.score.grid[key as keyof ScoringGrid]}})} sx={{ padding: '36%', position: 'relative' }} disabled={disabled}>
+                <CardActionArea onClick={e => {
+                    console.log(key)
+                    props.setScore({...props.score, grid: { ...props.score.grid, [key]: j < 3 ? !props.score.grid[key as keyof ScoringGrid] : ++props.score.grid[key as keyof ScoringGrid] % 3}})}
+                  } sx={{ padding: '36%', position: 'relative' }} disabled={disabled}>
                   <Icon>{ shape }</Icon>
                 </CardActionArea>
               </CobeCard>
@@ -67,14 +120,14 @@ export default function  ScoringTable(props: ScoringTableProps) {
       <Grid item xs={12} mb={2}>
         <ToggleButtonGroup
             value={props.score.charging}
-            exclusive
             size="large"
             onChange={(e,v) => props.setScore({...props.score, charging: v})}
+            exclusive={props.teleop}
             fullWidth
           >
             <ToggleButton color="warning" value={ChargingMode.None}>None</ToggleButton>
             <ToggleButton color="error" value={ChargingMode.Attempted}>Attempted</ToggleButton>
-            <ToggleButton color="secondary" value={ChargingMode.Community}>Parked</ToggleButton>
+            <ToggleButton color="secondary" value={ChargingMode.Community}>{props.teleop ? 'Parked' : 'Left Community'}</ToggleButton>
             <ToggleButton color="info" value={ChargingMode.Docked}>Docked</ToggleButton>
             <ToggleButton color="success" value={ChargingMode.Engaged}>Engaged</ToggleButton>
           </ToggleButtonGroup>

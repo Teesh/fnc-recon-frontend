@@ -11,6 +11,12 @@ type ScoutReport = {
   match: string
 }
 
+export enum GamePiece {
+  None,
+  Cone,
+  Cube
+}
+
 export type ScoringGrid = {
   cone_1_1: boolean,
   cube_1_2: boolean,
@@ -32,15 +38,15 @@ export type ScoringGrid = {
   cube_2_8: boolean,
   cone_2_9: boolean,
 
-  cobe_3_1: boolean,
-  cobe_3_2: boolean,
-  cobe_3_3: boolean,
-  cobe_3_4: boolean,
-  cobe_3_5: boolean,
-  cobe_3_6: boolean,
-  cobe_3_7: boolean,
-  cobe_3_8: boolean,
-  cobe_3_9: boolean
+  cobe_3_1: GamePiece,
+  cobe_3_2: GamePiece,
+  cobe_3_3: GamePiece,
+  cobe_3_4: GamePiece,
+  cobe_3_5: GamePiece,
+  cobe_3_6: GamePiece,
+  cobe_3_7: GamePiece,
+  cobe_3_8: GamePiece,
+  cobe_3_9: GamePiece
 }
 
 export type ScoreSheet = {
@@ -64,7 +70,7 @@ export type ScoreSheet = {
     floor_missed: number
   }
 
-  charging: ChargingMode
+  charging: ChargingMode | ChargingMode[]
 }
 
 export enum ChargingMode {
@@ -97,15 +103,15 @@ let defaultScore: ScoreSheet = {
     cube_2_8: false,
     cone_2_9: false,
 
-    cobe_3_1: false,
-    cobe_3_2: false,
-    cobe_3_3: false,
-    cobe_3_4: false,
-    cobe_3_5: false,
-    cobe_3_6: false,
-    cobe_3_7: false,
-    cobe_3_8: false,
-    cobe_3_9: false,
+    cobe_3_1: GamePiece.None,
+    cobe_3_2: GamePiece.None,
+    cobe_3_3: GamePiece.None,
+    cobe_3_4: GamePiece.None,
+    cobe_3_5: GamePiece.None,
+    cobe_3_6: GamePiece.None,
+    cobe_3_7: GamePiece.None,
+    cobe_3_8: GamePiece.None,
+    cobe_3_9: GamePiece.None,
   },
 
   misses: {
@@ -190,12 +196,12 @@ export default function ScoutForm() {
   useEffect(() => {
     const calcScore = () => {
       let tempScore = 0
-      Object.values(autoScore.grid).forEach((value: boolean, index: number) => {
+      Object.values(autoScore.grid).forEach((value: boolean | GamePiece, index: number) => {
         if (index < 9 && value) tempScore += 6
         if (index >= 9 && index < 18 && value) tempScore += 4
         if (index >= 18 && value) tempScore += 3
       })
-      Object.values(teleScore.grid).forEach((value: boolean, index: number) => {
+      Object.values(teleScore.grid).forEach((value: boolean | GamePiece, index: number) => {
         if (index < 9 && value) tempScore += 5
         if (index >= 9 && index < 18 && value) tempScore += 3
         if (index >= 18 && value) tempScore += 2
@@ -238,7 +244,9 @@ export default function ScoutForm() {
       auto_score: autoScore,
       tele_score: teleScore
     }
-    await addReport(body)
+
+    console.log(body)
+    // await addReport(body)
     alert("Report added!")
   }
 
@@ -247,6 +255,8 @@ export default function ScoutForm() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
+
+  let flip = ['blue1', 'blue2', 'blue3'].includes(scoutInfo.alliance)
 
   return (
     <React.Fragment>
@@ -332,10 +342,10 @@ export default function ScoutForm() {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <ScoringTable key={0} score={autoScore} setScore={setAutoScore}/>
+            <ScoringTable key={0} score={autoScore} flip={flip} setScore={setAutoScore}/>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <ScoringTable key={1} score={teleScore} setScore={setTeleScore} autoScore={autoScore} teleop/>
+            <ScoringTable key={1} score={teleScore} flip={flip} setScore={setTeleScore} autoScore={autoScore} teleop/>
           </CustomTabPanel>
         </Box>
         { /* Submit */ }
