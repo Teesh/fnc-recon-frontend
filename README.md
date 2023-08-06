@@ -31,10 +31,10 @@
 <br />
 <div align="center">
 
-<h2 align="center">FNC Recon React Frontend</h2>
+<h2 align="center">FNCUnited React Frontend</h2>
 
   <p align="center">
-    The FNC Recon App will consist of three portions: collection, storage, and analysis. This project specifically targets the analysis portion through building a React frontend as a baseline for somewhere to create graphs, tables, etc.
+    The FNCUnited App will consist of three portions: collection, storage, and analysis. This project specifically targets the analysis portion through building a React frontend as a baseline for somewhere to create graphs, tables, etc.
     <br />
     <a href="https://github.com/Teesh/fnc-recon-frontend"><strong>Explore the docs »</strong></a>
     <br />
@@ -206,7 +206,7 @@ Project Link: [https://github.com/Teesh/fnc-recon-frontend](https://github.com/T
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [Terrorbytes](terrorbytes.org) for their support and vision in this
+* [RoboEagles 4828](roboeagles.org), [Terrorbytes 4561](terrorbytes.org), [Omegabytes 5727](https://sites.google.com/view/omegabytesprojects/home), and the 20+ FNCU teams for their support and vision in this project
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
