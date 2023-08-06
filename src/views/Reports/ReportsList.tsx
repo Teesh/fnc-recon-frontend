@@ -6,39 +6,18 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import Title from 'components/Title'
 import { useEffect, useState } from 'react'
-
-type Report = {
-  id: number,
-  reporting_team: number,
-  year: number,
-  event: string,
-  match: string,
-  scouted_team: number,
-  alliance: string,
-  total_score: number
-}
-
-
+import { getReports } from 'db/connector'
+import { NewReport } from 'db/connector'
 
 export default function TeamsList() {
-  const [reports, setReports] = useState<Report[]>([])
+  const [reports, setReports] = useState<NewReport[]>([])
 
   useEffect(() => {
-    const getReports = async () => {
-      let endpoint = ""
-      if(process.env.REACT_APP_ENVIRONMENT === 'local') {
-        endpoint = "/api/v1/reports"
-      }
-      try {
-        let response = await fetch(endpoint, {
-          method: 'GET'
-        })
-        setReports(await response.json())
-      } catch (e) {
-        console.log(e)
-      }
+    const getAllReports = async () => {
+      let dbReports = await getReports()
+      if (dbReports) setReports(dbReports.data())
     }
-    getReports()
+    getAllReports()
   }, [])
 
   return (

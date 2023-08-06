@@ -23,7 +23,7 @@ if (process.env.REACT_APP_ENVIRONMENT === 'local') {
   endpoint = ''
 }
 
-type NewReport = {
+export type NewReport = {
   reporting_team: string,
   alliance: string,
   event: string,
@@ -40,6 +40,15 @@ export const testDB = async () => {
 export const addReport = async (value: NewReport) => {
   try {
     await setDoc(doc(db, endpoint, uuidv4()), value)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export const getReports = async () => {
+  try {
+    let response = await getDocs(collection(db, endpoint))
+    return response ? response : []
   } catch (e) {
     console.error(e)
   }
