@@ -51,25 +51,6 @@ export type ScoringGrid = {
 
 export type ScoreSheet = {
   grid: ScoringGrid,
-
-  misses: {
-    cone_high: number,
-    cone_mid: number,
-    cone_low: number,
-    cube_high: number,
-    cube_mid: number,
-    cube_low: number
-  }
-
-  intakes: {
-    single_grabbed: number,
-    single_missed: number,
-    double_grabbed: number,
-    double_missed: number,
-    floor_grabbed: number,
-    floor_missed: number
-  }
-
   charging: ChargingMode | ChargingMode[]
 }
 
@@ -114,24 +95,6 @@ let defaultScore: ScoreSheet = {
     cobe_3_9: GamePiece.None,
   },
 
-  misses: {
-    cone_high: 0,
-    cone_mid: 0,
-    cone_low: 0,
-    cube_high: 0,
-    cube_mid: 0,
-    cube_low: 0
-  },
-
-  intakes: {
-    single_grabbed: 0,
-    single_missed: 0,
-    double_grabbed: 0,
-    double_missed: 0,
-    floor_grabbed: 0,
-    floor_missed: 0
-  },
-
   charging: ChargingMode.None
 }
 
@@ -171,7 +134,18 @@ function CustomTabPanel(props: TabPanelProps) {
   )
 }
 
-export default function ScoutForm() {  
+export default function ScoutForm() {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth)
+  useEffect(() => {
+    const changesize = () => {
+      setScreenWidth(window.innerWidth)
+    }
+    window.addEventListener('resize', changesize)
+    return () => {
+      window.removeEventListener('resize', changesize)
+    }
+  }, [window.innerWidth])
+
   const [scoutInfo, setScoutInfo] = useState<ScoutReport>({
     teamNumber: '',
     alliance: '',
@@ -280,7 +254,7 @@ export default function ScoutForm() {
         </Grid>
         { /* Event and Match */}
         <Grid item xs={12}><Divider /></Grid>
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
               variant="outlined"
@@ -304,20 +278,21 @@ export default function ScoutForm() {
         </Grid>
         <Grid item xs={12}><Divider /></Grid>
         { /* Alliance */ } 
-        <Grid item xs={13} spacing={3} style={{paddingLeft: "0px"}}>
+        <Grid item xs={13} style={{paddingLeft: "0px"}}>
           <ToggleButtonGroup
             value={scoutInfo.alliance}
             exclusive
+            fullWidth
             size="large"
             onChange={handleAllianceChange}
             style={{}}
           >
-            <ToggleButton color="error" value="red1" style={{maxWidth: "14.5vw"}}>Red 1</ToggleButton>
-            <ToggleButton color="error" value="red2" style={{maxWidth: "14.5vw"}}>Red 2</ToggleButton>
-            <ToggleButton color="error" value="red3" style={{maxWidth: "14.5vw"}}>Red 3</ToggleButton>
-            <ToggleButton color="primary" value="blue1" style={{maxWidth: "14.5vw"}}>Blue 1</ToggleButton>
-            <ToggleButton color="primary" value="blue2" style={{maxWidth: "14.5vw"}}>Blue 2</ToggleButton>
-            <ToggleButton color="primary" value="blue3" style={{maxWidth: "14.5vw"}}>Blue 3</ToggleButton>
+            <ToggleButton color="error" value="red1">{screenWidth <= 768 ? 'R1' : 'Red 1'}</ToggleButton>
+            <ToggleButton color="error" value="red2">{screenWidth <= 768 ? 'R2' : 'Red 2'}</ToggleButton>
+            <ToggleButton color="error" value="red3">{screenWidth <= 768 ? 'R3' : 'Red 3'}</ToggleButton>
+            <ToggleButton color="primary" value="blue1">{screenWidth <= 768 ? 'B1' : 'Blue 1'}</ToggleButton>
+            <ToggleButton color="primary" value="blue2">{screenWidth <= 768 ? 'B2' : 'Blue 2'}</ToggleButton>
+            <ToggleButton color="primary" value="blue3">{screenWidth <= 768 ? 'B3' : 'Blue 3'}</ToggleButton>
           </ToggleButtonGroup>
         </Grid>
         <Grid item xs={12}><Divider /></Grid>
@@ -342,10 +317,10 @@ export default function ScoutForm() {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <ScoringTable key={0} score={autoScore} flip={flip} setScore={setAutoScore}/>
+            <ScoringTable key={0} score={autoScore} flip={flip} setScore={setAutoScore} teleScore={teleScore} sw={screenWidth}/>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <ScoringTable key={1} score={teleScore} flip={flip} setScore={setTeleScore} autoScore={autoScore} teleop/>
+            <ScoringTable key={1} score={teleScore} flip={flip} setScore={setTeleScore} autoScore={autoScore}  sw={screenWidth} teleop/>
           </CustomTabPanel>
         </Box>
         { /* Submit */ }
