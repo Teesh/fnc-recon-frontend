@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles'
 import { Add, Remove } from '@mui/icons-material'
 import { ChargingMode, ScoreSheet, ScoringGrid, GamePiece } from "./ScoutForm"
 import { type } from "os"
+import e from "express"
 
 const CobeCard = styled(Card)({
   borderRadius: 0,
@@ -10,7 +11,7 @@ const CobeCard = styled(Card)({
 })
 
 const CobeGrid = styled(Grid)({
-  width: 'calc(100% / 3)',
+  width: window.innerWidth <= 768 ? 'calc(100% / 3)' : 'calc(100% / 9)',
 })
 
 type ScoringTableProps = {
@@ -68,15 +69,23 @@ export default function  ScoringTable(props: ScoringTableProps) {
     })
   }
 
-  const makeGrid = () => {
+  const makeGrid = (mobile: boolean) => {
     let grid: any[] = []
-    for (let i = 1; i <= 9; i++) {
-      if (props.flip) {
-        for (let j = 3; j >= 1; j--) {
-          makeGridItem(i, j, grid)
+    if (mobile) {
+      for (let i = 1; i <= 9; i++) {
+        if (props.flip) {
+          for (let j = 3; j >= 1; j--) {
+            makeGridItem(i, j, grid)
+          }
+        } else {
+          for (let j = 1; j <= 3; j++) {
+            makeGridItem(i, j, grid)
+          }
         }
-      } else {
-        for (let j = 1; j <= 3; j++) {
+      }
+    } else {
+      for (let j = 1; j <= 3; j++) {
+        for (let i = 1; i <= 9; i++) {
           makeGridItem(i, j, grid)
         }
       }
@@ -87,17 +96,22 @@ export default function  ScoringTable(props: ScoringTableProps) {
   return (
     <Grid container>
       <Grid container spacing={0} mb={2}>
-        <CobeGrid>
-          <CobeCard>{props.flip ? 'Hybrid' : 'High'}</CobeCard>
-        </CobeGrid>
-        <CobeGrid>
-          <CobeCard>Mid</CobeCard>
-        </CobeGrid>
-        <CobeGrid>
-          <CobeCard>{props.flip ? 'High' : 'Hybrid'}</CobeCard>
-        </CobeGrid>
       {
-        makeGrid().map(({i, j, key, shape, color, disabled}) => {
+        window.innerWidth <= 768 &&
+          <Grid container>
+            <CobeGrid>
+              <CobeCard>{props.flip ? 'Hybrid' : 'High'}</CobeCard>
+            </CobeGrid>
+            <CobeGrid>
+              <CobeCard>Mid</CobeCard>
+            </CobeGrid>
+            <CobeGrid>
+              <CobeCard>{props.flip ? 'High' : 'Hybrid'}</CobeCard>
+            </CobeGrid>
+          </Grid>
+      }
+      {
+        makeGrid(window.innerWidth <= 768).map(({i, j, key, shape, color, disabled}) => {
           return (
             <CobeGrid item key={key}>
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
