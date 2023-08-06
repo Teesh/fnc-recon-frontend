@@ -22,7 +22,7 @@ type ScoringTableProps = {
 
 export default function  ScoringTable(props: ScoringTableProps) {
   const CobeGrid = styled(Grid)({
-    width: props.sw <= 768 ? 'calc(100% / 3)' : 'calc(100% / 9)',
+    width: props.sw <= 660 ? 'calc(100% / 3)' : 'calc(100% / 9)',
   })
 
   const makeGridItem = (i: number, j: number, grid: any[]) => {
@@ -104,7 +104,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
     <Grid container>
       <Grid container spacing={0} mb={2}>
       {
-        props.sw <= 768 &&
+        props.sw <= 660 &&
           <Grid container>
             <CobeGrid>
               <CobeCard>{props.flip ? 'Hybrid' : 'High'}</CobeCard>
@@ -118,7 +118,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
           </Grid>
       }
       {
-        props.sw <= 768 && makeGrid(props.sw <= 768).map(({i, j, key, shape, color, disabled}) => {
+        props.sw <= 660 && makeGrid(props.sw <= 660).map(({i, j, key, shape, color, disabled}) => {
           return (
             <CobeGrid item key={key}>
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
@@ -134,7 +134,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
         })
       }
       {
-        props.sw > 768 && makeGrid(props.sw <= 768).map(({i, j, key, shape, color, disabled}) => {
+        props.sw > 660 && makeGrid(props.sw <= 660).map(({i, j, key, shape, color, disabled}) => {
           return (
             <CobeGrid item key={key}>
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
@@ -161,7 +161,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
             onChange={(e,v) => props.setScore({...props.score, charging: v})}
             exclusive={props.teleop}
             fullWidth
-            orientation={props.sw < 768 ? 'vertical' : 'horizontal'}
+            orientation={props.sw < 660 ? 'vertical' : 'horizontal'}
           >
             <ToggleButton color="warning" value="none">None</ToggleButton>
             <ToggleButton color="error" value="attempted">Attempted</ToggleButton>
