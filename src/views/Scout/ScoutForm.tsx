@@ -303,21 +303,21 @@ export default function ScoutForm() {
           </Grid>
         </Grid>
         <Grid item xs={12}><Divider /></Grid>
-        { /* Alliance */ }
-        <Grid item xs={12}>
+        { /* Alliance */ } 
+        <Grid item xs={13} spacing={3} style={{paddingLeft: "0px"}}>
           <ToggleButtonGroup
             value={scoutInfo.alliance}
             exclusive
             size="large"
             onChange={handleAllianceChange}
-            fullWidth
+            style={{}}
           >
-            <ToggleButton color="error" value="red1">Red 1</ToggleButton>
-            <ToggleButton color="error" value="red2">Red 2</ToggleButton>
-            <ToggleButton color="error" value="red3">Red 3</ToggleButton>
-            <ToggleButton color="primary" value="blue1">Blue 1</ToggleButton>
-            <ToggleButton color="primary" value="blue2">Blue 2</ToggleButton>
-            <ToggleButton color="primary" value="blue3">Blue 3</ToggleButton>
+            <ToggleButton color="error" value="red1" style={{maxWidth: "14.5vw"}}>Red 1</ToggleButton>
+            <ToggleButton color="error" value="red2" style={{maxWidth: "14.5vw"}}>Red 2</ToggleButton>
+            <ToggleButton color="error" value="red3" style={{maxWidth: "14.5vw"}}>Red 3</ToggleButton>
+            <ToggleButton color="primary" value="blue1" style={{maxWidth: "14.5vw"}}>Blue 1</ToggleButton>
+            <ToggleButton color="primary" value="blue2" style={{maxWidth: "14.5vw"}}>Blue 2</ToggleButton>
+            <ToggleButton color="primary" value="blue3" style={{maxWidth: "14.5vw"}}>Blue 3</ToggleButton>
           </ToggleButtonGroup>
         </Grid>
         <Grid item xs={12}><Divider /></Grid>

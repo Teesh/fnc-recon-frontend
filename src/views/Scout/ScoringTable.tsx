@@ -22,6 +22,7 @@ type ScoringTableProps = {
   teleop?: boolean
 }
 
+
 export default function  ScoringTable(props: ScoringTableProps) {
   const makeGridItem = (i: number, j: number, grid: any[]) => {
     let gamePiece, color, shape, disabled = false
@@ -138,12 +139,13 @@ export default function  ScoringTable(props: ScoringTableProps) {
             onChange={(e,v) => props.setScore({...props.score, charging: v})}
             exclusive={props.teleop}
             fullWidth
+            style={{flexDirection: (screenWidth < 660)?("column"):("row"), justifyContent: "space-between",}}
           >
-            <ToggleButton color="warning" value={ChargingMode.None}>None</ToggleButton>
-            <ToggleButton color="error" value={ChargingMode.Attempted}>Attempted</ToggleButton>
-            <ToggleButton color="secondary" value={ChargingMode.Community}>{props.teleop ? 'Parked' : 'Left Community'}</ToggleButton>
-            <ToggleButton color="info" value={ChargingMode.Docked}>Docked</ToggleButton>
-            <ToggleButton color="success" value={ChargingMode.Engaged}>Engaged</ToggleButton>
+            <ToggleButton color="warning" value="none" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>None</ToggleButton>
+            <ToggleButton color="error" value="attempted" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Attempted</ToggleButton>
+            <ToggleButton color="secondary" value="parked" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>{props.teleop ? 'Parked' : 'Left Community'}</ToggleButton>
+            <ToggleButton color="info" value="docked" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Docked</ToggleButton>
+            <ToggleButton color="success" value="engaged" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Engaged</ToggleButton>
           </ToggleButtonGroup>
       </Grid>
       <Grid item xs={12} mb={2}>
