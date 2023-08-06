@@ -23,21 +23,13 @@ if (process.env.REACT_APP_ENVIRONMENT === 'local') {
   endpoint = ''
 }
 
-export type NewReport = {
-  reporting_team: string,
-  alliance: string,
-  event: string,
-  match: string,
-  scouted_team: string,
-} | ScoreData
-
 export const testDB = async () => {
   console.log("Connecting to DB")
   let snapshot = await getCountFromServer(collection(db, 'fnc-united-db-dev'))
   console.log(`${snapshot.data().count} entries found`)
 }
 
-export const addReport = async (value: NewReport) => {
+export const addReport = async (value: ScoreData) => {
   try {
     await setDoc(doc(db, endpoint, uuidv4()), value)
   } catch (e) {

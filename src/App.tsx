@@ -1,12 +1,17 @@
 import './App.css'
 import Scout from './views/Scout'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Reports from 'views/Reports'
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Scout />
+        <Routes>
+          <Route path="/" element={<Scout />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="scout" element={<Scout />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

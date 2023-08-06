@@ -7,15 +7,20 @@ import TableRow from '@mui/material/TableRow'
 import Title from 'components/Title'
 import { useEffect, useState } from 'react'
 import { getReports } from 'db/connector'
-import { NewReport } from 'db/connector'
+import { ScoreData } from 'views/Scout/ScoutForm'
 
 export default function TeamsList() {
-  const [reports, setReports] = useState<NewReport[]>([])
+  const [reports, setReports] = useState<ScoreData[]>([])
 
   useEffect(() => {
     const getAllReports = async () => {
       let dbReports = await getReports()
-      if (dbReports) setReports(dbReports.data())
+      let docs: ScoreData[] = []
+      dbReports?.forEach(doc => {
+        docs.push(doc.data() as ScoreData)
+      })
+      setReports(docs)
+      console.log(reports)
     }
     getAllReports()
   }, [])
@@ -35,8 +40,8 @@ export default function TeamsList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {reports.map((row: Report) => (
-            <TableRow key={row.id}>
+          {reports.map((row: ScoreData, index: number) => (
+            <TableRow key={index}>
               <TableCell>{row.reporting_team}</TableCell>
               <TableCell>{row.scouted_team}</TableCell>
               <TableCell>{row.event}</TableCell>

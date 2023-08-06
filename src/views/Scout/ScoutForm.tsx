@@ -130,6 +130,11 @@ let defaultScore: ScoreSheet = {
 }
 
 export type ScoreData = {
+  reporting_team: string,
+  alliance: string,
+  event: string,
+  match: string,
+  scouted_team: string,
   total_score: number
   auto_score: ScoreSheet,
   tele_score: ScoreSheet
@@ -223,11 +228,12 @@ export default function ScoutForm() {
       alert("Team Number missing in env file")
       return
     }
-    let body = {
+    let body: ScoreData = {
       reporting_team: process.env.REACT_APP_TEAM_NUMBER,
       alliance: scoutInfo.alliance,
       event: scoutInfo.eventName,
       match: scoutInfo.match,
+      total_score: totalScore,
       scouted_team: scoutInfo.teamNumber,
       auto_score: autoScore,
       tele_score: teleScore
