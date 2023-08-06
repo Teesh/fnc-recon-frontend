@@ -2,6 +2,7 @@ import {Card, CardActionArea, Divider, FilledInput, Grid, Icon, IconButton, Inpu
 import { styled } from '@mui/material/styles'
 import { Add, Remove } from '@mui/icons-material';
 import { ScoreSheet, ScoringGrid } from "./ScoutForm";
+import React, { useState, useEffect } from 'react';
 
 const CobeCard = styled(Card)({
   borderRadius: 0,
@@ -19,10 +20,21 @@ type ScoringTableProps = {
   teleop?: boolean
 }
 
+
 export default function  ScoringTable(props: ScoringTableProps) {
+  const [screenWidth, setScreenWidth] = useState<number>(window.innerWidth);
+useEffect(() => {
+  const changesize = () => {
+    setScreenWidth(window.innerWidth);
+  };
+  window.addEventListener('resize', changesize);
+  return () => {
+    window.removeEventListener('resize', changesize);
+  };
+}, []);
   return (
     <Grid container>
-      <Grid container spacing={0} mb={2}>
+      <Grid container spacing={0} mb={2} style={{width: "90vw", paddingLeft: "0px"}}>
       { 
         Object.values(props.score.grid).map((value: boolean, index: number) => {
           let disabled = false
@@ -51,8 +63,8 @@ export default function  ScoringTable(props: ScoringTableProps) {
           return (
             <CobeGrid item key={key}>
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
-                <CardActionArea onClick={e => props.setScore({...props.score, grid: { ...props.score.grid, [key]: !props.score.grid[key as keyof ScoringGrid]}})} sx={{ padding: '36%', position: 'relative' }} disabled={disabled}>
-                  <Icon>{ shape }</Icon>
+                <CardActionArea style={{paddingLeft: "0px", marginLeft: "0px", }} onClick={e => props.setScore({...props.score, grid: { ...props.score.grid, [key]: !props.score.grid[key as keyof ScoringGrid]}})} sx={{ padding: '36%', position: 'relative' }} disabled={disabled}>
+                  <Icon style={{paddingLeft: (screenWidth < 660)?("0px"):("50%"), marginLeft: "0px"}}>{ shape }</Icon>
                 </CardActionArea>
               </CobeCard>
             </CobeGrid>
@@ -71,12 +83,13 @@ export default function  ScoringTable(props: ScoringTableProps) {
             size="large"
             onChange={(e,v) => props.setScore({...props.score, charging: v})}
             fullWidth
+            style={{flexDirection: (screenWidth < 660)?("column"):("row"), justifyContent: "space-between",}}
           >
-            <ToggleButton color="warning" value="none">None</ToggleButton>
-            <ToggleButton color="error" value="attempted">Attempted</ToggleButton>
-            <ToggleButton color="secondary" value="parked">Parked</ToggleButton>
-            <ToggleButton color="info" value="docked">Docked</ToggleButton>
-            <ToggleButton color="success" value="engaged">Engaged</ToggleButton>
+            <ToggleButton color="warning" value="none" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>None</ToggleButton>
+            <ToggleButton color="error" value="attempted" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Attempted</ToggleButton>
+            <ToggleButton color="secondary" value="parked" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Parked</ToggleButton>
+            <ToggleButton color="info" value="docked" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Docked</ToggleButton>
+            <ToggleButton color="success" value="engaged" style={{border: (screenWidth < 660)?("1px solid grey"):(""), borderRadius: (screenWidth < 660)?("5px"):("")}}>Engaged</ToggleButton>
           </ToggleButtonGroup>
       </Grid>
       <Grid item xs={12} mb={2}>
