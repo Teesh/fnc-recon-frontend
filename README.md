@@ -31,7 +31,7 @@
 <br />
 <div align="center">
 
-<h2 align="center">FNC Recon React Frontend</h2>
+<h2 align="center">FNCUnited React Frontend</h2>
 
   <p align="center">
     The FNC Recon App will consist of three portions: collection, storage, and analysis. This project specifically targets the analysis portion through building a React frontend as a baseline for somewhere to create graphs, tables, etc.
