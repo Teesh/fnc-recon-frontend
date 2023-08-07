@@ -39,7 +39,7 @@ export default function TeamsList() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: "40vw",
+    width: "60vw",
     bgcolor: 'background.paper',
     p: 4,
     borderRadius: "5px"
