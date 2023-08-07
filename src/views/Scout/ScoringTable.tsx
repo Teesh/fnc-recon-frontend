@@ -152,7 +152,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
       </Grid>
       
       <Grid item xs={12} mb={2}>
-        <Divider />
+
       </Grid>
       <Grid item xs={12} mb={2}>
         <ToggleButtonGroup
