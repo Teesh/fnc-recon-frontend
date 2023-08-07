@@ -31,7 +31,7 @@ export default function TeamsList() {
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>Reported By</TableCell>
+            {/*<TableCell>Reported By</TableCell>*/}
             <TableCell>Team</TableCell>
             <TableCell>Event</TableCell>
             <TableCell>Match</TableCell>
@@ -42,7 +42,7 @@ export default function TeamsList() {
         <TableBody>
           {reports.map((row: ScoreData, index: number) => (
             <TableRow key={index}>
-              <TableCell>{row.reporting_team}</TableCell>
+              {/*<TableCell>{row.reporting_team}</TableCell>*/}
               <TableCell>{row.scouted_team}</TableCell>
               <TableCell>{row.event}</TableCell>
               <TableCell>{row.match}</TableCell>
