@@ -45,9 +45,9 @@ export default function TeamsList() {
     borderRadius: "5px"
   };
   
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [open, setOpen] = React.useState("");
+    function handleOpen(id: any){setOpen(id)};
+    function handleClose(id: any){setOpen("")};
   return (
     <React.Fragment>
       <h1>Reports</h1>
@@ -73,20 +73,20 @@ export default function TeamsList() {
               <TableCell style={{fontSize: "1.5vw"}} align="center">{(row.alliance != undefined)?(<span style={{color: row.alliance.substring(0,row.alliance.length -1)}}>{row.alliance.toUpperCase()}</span>):(row.alliance)}</TableCell>
               <TableCell style={{fontSize: "1.5vw"}} align="center">{`${row.total_score}`}</TableCell>
               <TableCell style={{fontSize: "1.5vw"}}>
-              <Button onClick={(e)=>{handleOpen(); setNum(index)}}>View</Button>
+              <Button onClick={(e)=>{handleOpen(row.alliance + row.match + row.total_score + row.scouted_team + index + "id"); setNum(index)}}>View</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
+        open={open == (row.alliance + row.match + row.total_score + row.scouted_team + index + "id")}
+        onClose={(e)=>{handleClose(row.alliance + row.match + row.total_score + row.scouted_team + index + "id")}}
         closeAfterTransition
         BackdropComponent={Backdrop} // Use the Backdrop component
         BackdropProps={{
-          sx: { backgroundColor: 'rgba(0, 0, 0, 0.15)' }, // Custom backdrop color
+          sx: { backgroundColor: 'rgba(0, 0, 0, 0.1)' }, // Custom backdrop color
         }}
         
       >
-        <Fade in={open}>
+        <Fade in={open == (row.alliance + row.match + row.total_score + row.scouted_team + index + "id")}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
               <h3 style={{marginTop: "0px", paddingTop: "0px"}}>{reports[num]['scouted_team'] + " (" + reports[num]['alliance'].substring(0,1).toUpperCase() + "" + reports[num]['alliance'].substring(1, reports[num]['alliance'].length -1) + " alliance) - Match " + reports[num]['match']}</h3>
