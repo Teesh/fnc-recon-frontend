@@ -142,7 +142,7 @@ Use the following steps to get the app running on your local machine
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-The app is a blank slate at the moment, with goal of allowing devs to quickly start a blank React app and try new things with it. No functionality has been added and there in no integration with other portions of the FNU United app at this time.
+The app is a blank slate at the moment, with goal of allowing devs to quickly start a blank React app and try new things with it. No functionality has been added and there in no integration with other portions of the FNC United app at this time.
 
 _For more examples, please refer to the [Documentation (Placeholder)](https://example.com)_
 
@@ -194,7 +194,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Teesh - Find me on the FNC Scouting Discord as `Teesh|4561|Mentor` or reach out to me via email at `teesh.s93@gmail.com` 
+Find ys on the FNC Scouting Discord [https://discord.gg/kxeqeJsyta](https://discord.gg/kxeqeJsyta) or reach out to us via email at `ncfrcscouting@gmail.com` 
 
 Project Link: [https://github.com/Teesh/fnc-recon-frontend](https://github.com/Teesh/fnc-recon-frontend)
 
