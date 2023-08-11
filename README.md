@@ -194,7 +194,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Find ys on the FNC Scouting Discord [https://discord.gg/kxeqeJsyta](https://discord.gg/kxeqeJsyta) or reach out to us via email at `ncfrcscouting@gmail.com` 
+Find us on the FNC Scouting Discord [https://discord.gg/kxeqeJsyta](https://discord.gg/kxeqeJsyta) or reach out to us via email at `ncfrcscouting@gmail.com` 
 
 Project Link: [https://github.com/Teesh/fnc-recon-frontend](https://github.com/Teesh/fnc-recon-frontend)
 
