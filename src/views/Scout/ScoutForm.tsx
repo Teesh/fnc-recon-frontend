@@ -106,7 +106,8 @@ export type ScoreData = {
   scouted_team: string,
   total_score: number
   auto_score: ScoreSheet,
-  tele_score: ScoreSheet
+  tele_score: ScoreSheet,
+  details: string
 }
 
 interface TabPanelProps {
@@ -166,6 +167,7 @@ export default function ScoutForm() {
   const [totalScore, setTotalScore] = useState(0)
   const [autoScore, setAutoScore] = useState<ScoreSheet>(defaultScore)
   const [teleScore, setTeleScore] = useState<ScoreSheet>(defaultScore)
+  const [details, setDetails] = useState('')
 
   useEffect(() => {
     const calcScore = () => {
@@ -216,7 +218,8 @@ export default function ScoutForm() {
       total_score: totalScore,
       scouted_team: scoutInfo.teamNumber,
       auto_score: autoScore,
-      tele_score: teleScore
+      tele_score: teleScore,
+      details: details,
     }
 
     console.log(body)
@@ -323,6 +326,16 @@ export default function ScoutForm() {
             <ScoringTable key={1} score={teleScore} flip={flip} setScore={setTeleScore} autoScore={autoScore}  sw={screenWidth} teleop/>
           </CustomTabPanel>
         </Box>
+        <Grid item xs={12} mb={2}>
+          <TextField
+            variant="outlined"
+            label="Additional Details"
+            value={details}
+            onChange={e => { setDetails(e.target.value) }}
+            fullWidth
+            multiline
+          />
+        </Grid>
         { /* Submit */ }
         <Grid item xs={12}>
           <Button sx={{minHeight: 50}} variant="contained" color="success" fullWidth
