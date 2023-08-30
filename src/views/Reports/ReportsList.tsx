@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow'
 import Title from 'components/Title'
 import { useEffect, useState } from 'react'
 import { getReports } from 'db/connector'
-import { ScoreData } from 'views/Scout/ScoutForm'
+import { ChargingMode, GamePiece, ScoreData } from 'views/Scout/ScoutForm'
 import { Button, Grid } from '@mui/material'
 import { FileDownload } from '@mui/icons-material'
 
@@ -26,7 +26,109 @@ export default function TeamsList() {
     getAllReports()
   }, [])
 
-  const downloadData = () => {
+  const downloadAggregateData = () => {
+    let rows = []
+    rows.push("reported_by, team, event, match, alliance, score, notes, auto, charging, tele, charging, high, mid, low, cone, cube")
+    reports.forEach(e => {
+      let row = []
+      let auto = 0, auto_charge = 0, tele = 0, tele_charge = 0, high = 0, mid = 0, low = 0, cone = 0, cube = 0, link = 0
+
+      if (Array.isArray(e.auto_score.charging)) {
+        if(e.auto_score.charging.includes(ChargingMode.Community)) auto_charge = 3
+        if(e.auto_score.charging.includes(ChargingMode.Docked)) auto_charge = 8
+        else if(e.auto_score.charging.includes(ChargingMode.Engaged)) auto_charge = 12
+      }
+
+      Object.entries(e.auto_score.grid).forEach((v,i) => {
+        if (v) {
+          if (i < 9) {
+            high++
+            auto+=6
+          } else if (i >= 9 && i < 18) {
+            mid++
+            auto+=4
+          } else {
+            low++
+            auto+=3
+          }
+
+          if (i < 18 && (i % 9 === 1 || i % 9 === 4 || i % 9 === 7)) cube++
+          else if (i < 18) cone++
+          else {
+            // @ts-ignore
+            if (v === GamePiece.Cone) cone++
+            else cube++
+          }
+
+          if (link === 3) {
+            auto += 5
+            link = 0
+          }
+          if (i === 8 || i === 17 || i === 26) link = 0
+        }
+      })
+
+      if(e.tele_score.charging === ChargingMode.Community) tele_charge = 3
+      else if(e.tele_score.charging === ChargingMode.Docked) tele_charge = 8
+      else if(e.tele_score.charging === ChargingMode.Engaged) tele_charge = 12
+
+      Object.entries(e.tele_score.grid).forEach((v,i) => {
+        if (v) {
+          if (i < 9) {
+            high++
+            tele+=6
+          } else if (i >= 9 && i < 18) {
+            mid++
+            tele+=4
+          } else {
+            low++
+            tele+=3
+          }
+
+          if (i < 18 && (i % 9 === 1 || i % 9 === 4 || i % 9 === 7)) cube++
+          else if (i < 18) cone++
+          else {
+            // @ts-ignore
+            if (v === GamePiece.Cone) cone++
+            else cube++
+          }
+
+          if (link === 3) {
+            tele += 5
+            link = 0
+          }
+          if (i === 8 || i === 17 || i === 26) link = 0
+        }
+      })
+
+      row.push(e.reporting_team)
+      row.push(e.scouted_team)
+      row.push(e.event)
+      row.push(e.match)
+      row.push(e.alliance)
+      row.push(e.total_score)
+      row.push(e.details)
+      row.push(auto)
+      row.push(auto_charge)
+      row.push(tele)
+      row.push(tele_charge)
+      row.push(high)
+      row.push(mid)
+      row.push(low)
+      row.push(cone)
+      row.push(cube)
+
+      rows.push(row.join(','))
+    })
+
+    let csvContent = "data:text/csv;charset=utf-8," 
+    + rows.join("\n")
+    console.log(csvContent)
+    let encodedUri = encodeURI(csvContent)
+    window.open(encodedUri)
+  }
+
+  const downloadFlatData = () => {
     let rows = []
     rows.push("reported_by, team, event, match, alliance, score, notes, auto, charging, 1_1, 1_2, 1_3, 1_4, 1_5, 1_6, 1_7, 1_8, 1_9, 2_1, 2_2, 2_3, 2_4, 2_5, 2_6, 2_7, 2_8, 2_9, 3_1, 3_2, 3_3, 3_4, 3_5, 3_6, 3_7, 3_8, 3_9, tele, charging, 1_1, 1_2, 1_3, 1_4, 1_5, 1_6, 1_7, 1_8, 1_9, 2_1, 2_2, 2_3, 2_4, 2_5, 2_6, 2_7, 2_8, 2_9, 3_1, 3_2, 3_3, 3_4, 3_5, 3_6, 3_7, 3_8, 3_9")
     reports.forEach(e => {
@@ -96,8 +198,10 @@ export default function TeamsList() {
       row.push(e.tele_score.grid.cobe_3_7)
       row.push(e.tele_score.grid.cobe_3_8)
       row.push(e.tele_score.grid.cobe_3_9)
+
       rows.push(row.join(','))
     })
+
     let csvContent = "data:text/csv;charset=utf-8," 
     + rows.join("\n")
     console.log(csvContent)
@@ -116,8 +220,14 @@ export default function TeamsList() {
           <Button
             variant="contained"
             startIcon={<FileDownload />}
-            onClick={downloadData}
-          >Download</Button>
+            onClick={downloadFlatData}
+            color="success"
+          >Download Raw</Button>
+          <Button
+            variant="contained"
+            startIcon={<FileDownload />}
+            onClick={downloadAggregateData}
+          >Download Aggregate</Button>
         </Grid>
       </Grid>
       <Table size="small">

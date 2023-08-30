@@ -56,8 +56,7 @@ export type ScoreSheet = {
 
 export enum ChargingMode {
   None,
-  Attempted,
-  Community, // Taxied in Auto, Parked in Endgame
+  Community, // Left Community in Auto, Parked in Endgame
   Docked,
   Engaged
 }
@@ -165,7 +164,7 @@ export default function ScoutForm() {
   }
 
   const [totalScore, setTotalScore] = useState(0)
-  const [autoScore, setAutoScore] = useState<ScoreSheet>(defaultScore)
+  const [autoScore, setAutoScore] = useState<ScoreSheet>({...defaultScore, charging: []})
   const [teleScore, setTeleScore] = useState<ScoreSheet>(defaultScore)
   const [details, setDetails] = useState('')
 
@@ -193,9 +192,11 @@ export default function ScoutForm() {
         if (i === 8 || i === 17) linkCounter = 0
       }
   
-      if(autoScore.charging === ChargingMode.Community) tempScore += 3
-      else if(autoScore.charging === ChargingMode.Docked) tempScore += 8
-      else if(autoScore.charging === ChargingMode.Engaged) tempScore += 12
+      if (Array.isArray(autoScore.charging)) {
+        if(autoScore.charging.includes(ChargingMode.Community)) tempScore += 3
+        if(autoScore.charging.includes(ChargingMode.Docked)) tempScore += 8
+        else if(autoScore.charging.includes(ChargingMode.Engaged)) tempScore += 12
+      }
       if(teleScore.charging === ChargingMode.Community) tempScore += 2
       else if(teleScore.charging === ChargingMode.Docked) tempScore += 6
       else if(teleScore.charging === ChargingMode.Engaged) tempScore += 10
@@ -223,7 +224,7 @@ export default function ScoutForm() {
     }
 
     console.log(body)
-    // await addReport(body)
+    await addReport(body)
     alert("Report added!")
   }
 

@@ -1,7 +1,7 @@
 import {Card, CardActionArea, Divider, FilledInput, Grid, Icon, IconButton, InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableRow, ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { styled } from '@mui/material/styles'
 import { Add, Remove } from '@mui/icons-material'
-import { ScoreSheet, ScoringGrid } from "./ScoutForm"
+import { ChargingMode, ScoreSheet, ScoringGrid } from "./ScoutForm"
 import { useEffect, useState } from "react"
 
 const CobeCard = styled(Card)({
@@ -163,11 +163,10 @@ export default function  ScoringTable(props: ScoringTableProps) {
             fullWidth
             orientation={props.sw < 768 ? 'vertical' : 'horizontal'}
           >
-            <ToggleButton color="warning" value="none">None</ToggleButton>
-            <ToggleButton color="error" value="attempted">Attempted</ToggleButton>
-            <ToggleButton color="secondary" value="parked">{props.teleop ? 'Parked' : 'Left Community'}</ToggleButton>
-            <ToggleButton color="info" value="docked">Docked</ToggleButton>
-            <ToggleButton color="success" value="engaged">Engaged</ToggleButton>
+            <ToggleButton color="warning" value={ChargingMode.None}>None</ToggleButton>
+            <ToggleButton color="secondary" value={ChargingMode.Community}>{props.teleop ? 'Parked' : 'Left Community'}</ToggleButton>
+            <ToggleButton color="info" value={ChargingMode.Docked}>Docked</ToggleButton>
+            <ToggleButton color="success" value={ChargingMode.Engaged}>Engaged</ToggleButton>
           </ToggleButtonGroup>
       </Grid>
       <Grid item xs={12} mb={2}>
