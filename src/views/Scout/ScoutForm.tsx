@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, MenuItem, Select, FormControl,  InputLabel} from '@mui/material'
 import { useEffect, useState } from 'react'
+import { Link, Route } from "react-router-dom";
 import { addReport } from 'db/connector'
 import ScoringTable from './ScoringTable'
 
@@ -208,11 +209,21 @@ export default function ScoutForm() {
 
   const submitReport = async () => {
     if (!process.env.REACT_APP_TEAM_NUMBER) {
-      alert("Team Number missing in env file")
-      return
+      //alert("Team Number missing in env file")
+      //return
     }
+    console.log({
+      reporting_team: "0000",
+      alliance: scoutInfo.alliance,
+      event: scoutInfo.eventName,
+      match: scoutInfo.match,
+      total_score: totalScore,
+      scouted_team: scoutInfo.teamNumber,
+      auto_score: autoScore,
+      tele_score: teleScore
+    })
     let body: ScoreData = {
-      reporting_team: process.env.REACT_APP_TEAM_NUMBER,
+      reporting_team: "0000",
       alliance: scoutInfo.alliance,
       event: scoutInfo.eventName,
       match: scoutInfo.match,
@@ -257,23 +268,32 @@ export default function ScoutForm() {
           </Grid>
         </Grid>
         { /* Event and Match */}
-        <Grid item xs={12}><Divider /></Grid>
+        <Grid item xs={12}></Grid>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              variant="outlined"
-              label="Event"
-              placeholder="Asheville District Event"
-              onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
-              value={scoutInfo.eventName}
-              fullWidth
-            />
-          </Grid>
+        <FormControl style={{width: "48%", marginLeft: "2%", height: "80%", marginTop: "15px"}}>
+        <InputLabel id="demo-simple-select-label">Event</InputLabel>
+        <Select
+          value={scoutInfo.eventName}
+          label="Event"
+          inputProps={{
+            name: 'Event',
+            id: 'uncontrolled-native',
+          }}
+          onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
+          
+        >
+          <MenuItem value={"THOR East"} style={{textAlign: "center"}}>THOR East</MenuItem>
+          <MenuItem value={"Doyenne East"} style={{textAlign: "center"}}>Doyenne East</MenuItem>
+          <MenuItem value={"THOR West"} style={{textAlign: "center"}}>THOR West</MenuItem>
+          <MenuItem value={"Doyenne West"} style={{textAlign: "center"}}>Doyenne West</MenuItem>
+        </Select>
+         </FormControl>
           <Grid item xs={6}>
             <TextField
               variant="outlined"
               label="Match Number"
-              placeholder="Q22"
+              placeholder="12"
+              type="number"
               onChange={e => setScoutInfo({...scoutInfo, match: e.target.value})}
               value={scoutInfo.match}
               fullWidth
