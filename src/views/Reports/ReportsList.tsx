@@ -28,10 +28,10 @@ export default function TeamsList() {
 
   const downloadAggregateData = () => {
     let rows = []
-    rows.push("reported_by, team, event, match, alliance, score, notes, auto, charging, tele, charging, high, mid, low, cone, cube")
+    rows.push("reported_by, team, event, match, alliance, score, game pieces, high, mid, low, cone, cube, auto score, auto charge, tele score, tele charge, notes")
     reports.forEach(e => {
       let row = []
-      let auto = 0, auto_charge = 0, tele = 0, tele_charge = 0, high = 0, mid = 0, low = 0, cone = 0, cube = 0, link = 0
+      let auto = 0, auto_charge = 0, tele = 0, tele_charge = 0, high = 0, mid = 0, low = 0, cone = 0, cube = 0, link = 0, gp = 0
 
       if (Array.isArray(e.auto_score.charging)) {
         if(e.auto_score.charging.includes(ChargingMode.Community)) auto_charge = 3
@@ -39,7 +39,8 @@ export default function TeamsList() {
         else if(e.auto_score.charging.includes(ChargingMode.Engaged)) auto_charge = 12
       }
 
-      Object.entries(e.auto_score.grid).forEach((v,i) => {
+      Object.entries(e.auto_score.grid).forEach(([k,v],i) => {
+        console.log(v)
         if (v) {
           if (i < 9) {
             high++
@@ -52,6 +53,7 @@ export default function TeamsList() {
             auto+=3
           }
 
+          gp++
           if (i < 18 && (i % 9 === 1 || i % 9 === 4 || i % 9 === 7)) cube++
           else if (i < 18) cone++
           else {
@@ -72,7 +74,7 @@ export default function TeamsList() {
       else if(e.tele_score.charging === ChargingMode.Docked) tele_charge = 8
       else if(e.tele_score.charging === ChargingMode.Engaged) tele_charge = 12
 
-      Object.entries(e.tele_score.grid).forEach((v,i) => {
+      Object.entries(e.tele_score.grid).forEach(([k,v],i) => {
         if (v) {
           if (i < 9) {
             high++
@@ -85,6 +87,7 @@ export default function TeamsList() {
             tele+=3
           }
 
+          gp++
           if (i < 18 && (i % 9 === 1 || i % 9 === 4 || i % 9 === 7)) cube++
           else if (i < 18) cone++
           else {
@@ -101,22 +104,22 @@ export default function TeamsList() {
         }
       })
 
-      row.push(e.reporting_team)
       row.push(e.scouted_team)
       row.push(e.event)
       row.push(e.match)
       row.push(e.alliance)
       row.push(e.total_score)
-      row.push(e.details)
-      row.push(auto)
-      row.push(auto_charge)
-      row.push(tele)
-      row.push(tele_charge)
+      row.push(gp)
       row.push(high)
       row.push(mid)
       row.push(low)
       row.push(cone)
       row.push(cube)
+      row.push(auto)
+      row.push(auto_charge)
+      row.push(tele)
+      row.push(tele_charge)
+      row.push(e.details)
 
       rows.push(row.join(','))
     })
