@@ -270,25 +270,27 @@ export default function ScoutForm() {
         { /* Event and Match */}
         <Grid item xs={12}></Grid>
         <Grid container spacing={2}>
-        <FormControl style={{width: "48%", marginLeft: "2%", height: "80%", marginTop: "15px"}}>
-        <InputLabel id="demo-simple-select-label">Event</InputLabel>
-        <Select
-          value={scoutInfo.eventName}
-          label="Event"
-          inputProps={{
-            name: 'Event',
-            id: 'uncontrolled-native',
-          }}
-          onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
-          
-        >
-          <MenuItem value={"THOR East"} style={{textAlign: "center"}}>THOR East</MenuItem>
-          <MenuItem value={"Doyenne East"} style={{textAlign: "center"}}>Doyenne East</MenuItem>
-          <MenuItem value={"THOR West"} style={{textAlign: "center"}}>THOR West</MenuItem>
-          <MenuItem value={"Doyenne West"} style={{textAlign: "center"}}>Doyenne West</MenuItem>
-        </Select>
-         </FormControl>
-          <Grid item xs={6}>
+          <Grid item xs={12} lg={6}>
+            <FormControl style={{width: "48%", marginLeft: "2%", height: "80%", marginTop: "15px"}}>
+              <InputLabel id="demo-simple-select-label">Event</InputLabel>
+              <Select
+                value={scoutInfo.eventName}
+                label="Event"
+                inputProps={{
+                  name: 'Event',
+                  id: 'uncontrolled-native',
+                }}
+                onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
+              >
+                <MenuItem value={"UNC Asheville Event"} style={{textAlign: "center"}}>UNC Asheville Event</MenuItem>
+                <MenuItem value={"THOR East"} style={{textAlign: "center"}}>THOR East</MenuItem>
+                <MenuItem value={"Doyenne East"} style={{textAlign: "center"}}>Doyenne East</MenuItem>
+                <MenuItem value={"THOR West"} style={{textAlign: "center"}}>THOR West</MenuItem>
+                <MenuItem value={"Doyenne West"} style={{textAlign: "center"}}>Doyenne West</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} lg={6}>
             <TextField
               variant="outlined"
               label="Match Number"
@@ -362,6 +364,9 @@ export default function ScoutForm() {
           <Button sx={{minHeight: 50}} variant="contained" color="success" fullWidth
             onClick={submitReport}
           >Submit</Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Link to="/reports" ><Button variant="contained" color="secondary" fullWidth>Show Reports</Button></Link>
         </Grid>
       </Grid>
     </React.Fragment>

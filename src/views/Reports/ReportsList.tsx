@@ -16,6 +16,7 @@ import { getReports } from 'db/connector'
 import { ChargingMode, GamePiece, ScoreData } from 'views/Scout/ScoutForm'
 import { Button, Grid } from '@mui/material'
 import { FileDownload } from '@mui/icons-material'
+import { Link } from "react-router-dom"
 
 export default function TeamsList() {
   const [reports, setReports] = useState<ScoreData[]>([])
@@ -235,10 +236,12 @@ export default function TeamsList() {
     function handleClose(id: any){setOpen("")};
   return (
     <React.Fragment>
-      <Grid container>
-        <Grid item xs={4}></Grid>
+      <Grid container textAlign="left">
         <Grid item xs={4}>
-          <Title>Reports</Title>
+        <Link to="/scout" ><Button variant="contained" color="secondary">Add Report</Button></Link>
+        </Grid>
+        <Grid item xs={4}>
+          <h1>Reports</h1>
         </Grid>
         <Grid item xs={4} textAlign="right">
           <Button
