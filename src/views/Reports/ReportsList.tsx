@@ -2,10 +2,11 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { getReports } from 'db/connector'
 import { ChargingMode, GamePiece, ScoreData } from 'views/Scout/ScoutForm'
-import { Button, Grid } from '@mui/material'
+import { Box, Button, Grid } from '@mui/material'
 import { FileDownload } from '@mui/icons-material'
 import { Link } from "react-router-dom"
-import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid'
+import clsx from 'clsx'
 
 type ScoreDataWithID = {
   id: string
@@ -35,7 +36,12 @@ const columns: GridColDef[] = [
   { field: 'scouted_team', headerName: 'Team', flex: 2 },
   { field: 'event', headerName: 'Event', flex: 4 },
   { field: 'match', headerName: 'Match', flex: 2 },
-  { field: 'alliance', headerName: 'Alliance', flex: 2 },
+  { field: 'alliance', headerName: 'Alliance', flex: 2, cellClassName: (params: GridCellParams<String>) =>
+    clsx('super-app', {
+      red: params.value === "Red",
+      blue: params.value === "Blue",
+    }),
+  },
   { field: 'total_score',headerName: 'Score', type: 'number',flex: 2 },
   { field: 'gp',headerName: 'Pieces',type: 'number', flex: 2 },
   { field: 'high',headerName: 'High',type: 'number', flex: 2 },
@@ -262,13 +268,13 @@ export default function TeamsList() {
   return (
     <React.Fragment>
       <Grid container>
-        <Grid item xs={4} display="flex" alignItems="center" justifyContent="left">
+        <Grid item xs={12} lg={4} display="flex" alignItems="center" justifyContent="left">
           <Link to="/scout" ><Button variant="contained" color="secondary">Add Report</Button></Link>
         </Grid>
-        <Grid item xs={4} textAlign="center">
+        <Grid item xs={12} lg={4} textAlign="center">
           <h1>Reports</h1>
         </Grid>
-        <Grid item xs={4} display="flex" justifyContent="right" alignItems="center">
+        <Grid item xs={12} lg={4} display="flex" justifyContent="right" alignItems="center">
           <Button
             variant="contained"
             startIcon={<FileDownload />}
@@ -278,7 +284,23 @@ export default function TeamsList() {
         </Grid>
       </Grid>
       <Grid item xs={12}>
-        <DataGrid rows={reports} columns={columns} slots={{ toolbar: GridToolbar }} checkboxSelection/>
+        <Box
+          sx={{
+            width: '100%',
+            '& .super-app.red': {
+              backgroundColor: 'red',
+              color: 'white',
+              fontWeight: '600',
+            },
+            '& .super-app.blue': {
+              backgroundColor: 'blue',
+              color: 'white',
+              fontWeight: '600',
+            },
+          }}
+        >
+          <DataGrid rows={reports} columns={columns} slots={{ toolbar: GridToolbar }} checkboxSelection/>
+        </Box>
       </Grid>
     </React.Fragment>
   )
