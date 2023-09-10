@@ -271,7 +271,7 @@ export default function ScoutForm() {
         <Grid item xs={12}></Grid>
         <Grid container spacing={2}>
           <Grid item xs={12} lg={6}>
-            <FormControl style={{width: "48%", marginLeft: "2%", height: "80%", marginTop: "15px"}}>
+            <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Event</InputLabel>
               <Select
                 value={scoutInfo.eventName}
@@ -280,13 +280,15 @@ export default function ScoutForm() {
                   name: 'Event',
                   id: 'uncontrolled-native',
                 }}
+                sx={{ textAlign: 'left' }}
                 onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
               >
-                <MenuItem value={"UNC Asheville Event"} style={{textAlign: "center"}}>UNC Asheville Event</MenuItem>
-                <MenuItem value={"THOR East"} style={{textAlign: "center"}}>THOR East</MenuItem>
-                <MenuItem value={"Doyenne East"} style={{textAlign: "center"}}>Doyenne East</MenuItem>
-                <MenuItem value={"THOR West"} style={{textAlign: "center"}}>THOR West</MenuItem>
-                <MenuItem value={"Doyenne West"} style={{textAlign: "center"}}>Doyenne West</MenuItem>
+                <MenuItem value={"UNC Asheville Event"}>UNC Asheville Event</MenuItem>
+                <MenuItem value={"THOR East"}>THOR East</MenuItem>
+                <MenuItem value={"Doyenne East"}>Doyenne East</MenuItem>
+                <MenuItem value={"THOR West"}>THOR West</MenuItem>
+                <MenuItem value={"Doyenne West"}>Doyenne West</MenuItem>
+                <MenuItem value={"Rumble on the Road"}>Doyenne West</MenuItem>
               </Select>
             </FormControl>
           </Grid>
