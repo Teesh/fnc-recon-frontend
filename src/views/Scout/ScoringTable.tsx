@@ -60,14 +60,37 @@ export default function  ScoringTable(props: ScoringTableProps) {
       }
     }
 
-    if (props.autoScore?.grid[key as keyof ScoringGrid]) {
+    let autoScoreGridPiece = props.autoScore?.grid[key as keyof ScoringGrid]
+    let teleScoreGridPiece = props.teleScore?.grid[key as keyof ScoringGrid]
+
+    if (autoScoreGridPiece) {
       color = 'green'
       disabled = true
+      switch (autoScoreGridPiece) {
+        default:
+          break //default case should not be possible
+        case 1:
+          shape = 'change_history'
+          break
+        case 2:
+          shape = 'crop_square'
+          break
+      }
     }
 
-    if (props.teleScore?.grid[key as keyof ScoringGrid]) {
+    if (teleScoreGridPiece) {
       color = 'grey'
       disabled = true
+      switch (teleScoreGridPiece) {
+        default:
+          break //default case should not be possible
+        case 1:
+          shape = 'change_history'
+          break
+        case 2:
+          shape = 'crop_square'
+          break
+      }
     }
 
     grid.push({
