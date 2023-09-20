@@ -43,15 +43,19 @@ export default function  ScoringTable(props: ScoringTableProps) {
 
     if (j > 2) {
       switch(props.score.grid[key as keyof ScoringGrid]) {
-        case 0: shape = 'radio_button_unchecked'
+        case 0: 
+          shape = 'radio_button_unchecked'
           break
-        case 1: color = 'orange'
+        case 1: 
+          color = 'orange'
           shape = 'change_history'
           break
-        case 2: color = 'purple'
+        case 2: 
+          color = 'purple'
           shape = 'crop_square'
           break
-        default: shape = 'radio_button_unchecked'
+        default: 
+          shape = 'radio_button_unchecked'
           break
       }
     }
