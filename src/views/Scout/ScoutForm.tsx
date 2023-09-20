@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, MenuItem, Select, FormControl,  InputLabel} from '@mui/material'
 import { useEffect, useState } from 'react'
-import { Link, Route } from "react-router-dom";
+import { Link, Route, useNavigate } from "react-router-dom";
 import { addReport } from 'db/connector'
 import ScoringTable from './ScoringTable'
 
@@ -236,7 +236,7 @@ export default function ScoutForm() {
 
     console.log(body)
     await addReport(body)
-    alert("Report added!")
+    useNavigate('/reports')
   }
 
   const [value, setValue] = React.useState(0);
