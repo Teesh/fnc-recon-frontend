@@ -259,8 +259,8 @@ export default function ScoutForm() {
             <TextField
               variant="outlined"
               label="Team Number"
-              placeholder="1234"
-              type="number"
+              placeholder="9999"
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
               onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
               value={scoutInfo.teamNumber}
               fullWidth
@@ -296,8 +296,8 @@ export default function ScoutForm() {
             <TextField
               variant="outlined"
               label="Match Number"
-              placeholder="12"
-              type="number"
+              placeholder="0"
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
               onChange={e => setScoutInfo({...scoutInfo, match: e.target.value})}
               value={scoutInfo.match}
               fullWidth
