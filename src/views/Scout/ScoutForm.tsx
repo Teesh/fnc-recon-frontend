@@ -236,7 +236,7 @@ export default function ScoutForm() {
 
     console.log(body)
     await addReport(body)
-    useNavigate('/reports')
+    useNavigate('reports')
   }
 
   const [value, setValue] = React.useState(0);
