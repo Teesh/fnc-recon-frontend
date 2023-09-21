@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, MenuItem, Select, FormControl,  InputLabel} from '@mui/material'
 import { useEffect, useState } from 'react'
-import { Link, Route, useNavigate } from "react-router-dom";
+import { Link, Route, redirect } from "react-router-dom";
 import { addReport } from 'db/connector'
 import ScoringTable from './ScoringTable'
 
@@ -236,7 +236,7 @@ export default function ScoutForm() {
 
     console.log(body)
     await addReport(body)
-    useNavigate('reports')
+    return redirect ('/reports')
   }
 
   const [value, setValue] = React.useState(0);
@@ -297,7 +297,7 @@ export default function ScoutForm() {
               variant="outlined"
               label="Match Number"
               placeholder="0"
-              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              type="text"
               onChange={e => setScoutInfo({...scoutInfo, match: e.target.value})}
               value={scoutInfo.match}
               fullWidth
