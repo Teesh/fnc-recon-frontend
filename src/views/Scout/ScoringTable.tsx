@@ -41,21 +41,6 @@ export default function  ScoringTable(props: ScoringTableProps) {
 
     let key = `${gamePiece}_${j}_${i}`
 
-    if (j > 2) {
-      switch(props.score.grid[key as keyof ScoringGrid]) {
-        case 0: shape = 'radio_button_unchecked'
-          break
-        case 1: color = 'orange'
-          shape = 'change_history'
-          break
-        case 2: color = 'purple'
-          shape = 'crop_square'
-          break
-        default: shape = 'radio_button_unchecked'
-          break
-      }
-    }
-
     if (props.autoScore?.grid[key as keyof ScoringGrid]) {
       color = 'green'
       disabled = true
@@ -64,6 +49,32 @@ export default function  ScoringTable(props: ScoringTableProps) {
     if (props.teleScore?.grid[key as keyof ScoringGrid]) {
       color = 'grey'
       disabled = true
+    }
+
+    if (j > 2) {
+      if (disabled) {
+        switch(props.autoScore?.grid[key as keyof ScoringGrid] || props.teleScore?.grid[key as keyof ScoringGrid]) {
+          case 1: shape = 'change_history'
+            break
+          case 2: shape = 'crop_square'
+            break
+          default: shape = 'radio_button_unchecked'
+            break
+        }
+      } else {
+        switch(props.score.grid[key as keyof ScoringGrid]) {
+          case 0: shape = 'radio_button_unchecked'
+            break
+          case 1: color = 'orange'
+            shape = 'change_history'
+            break
+          case 2: color = 'purple'
+            shape = 'crop_square'
+            break
+          default: shape = 'radio_button_unchecked'
+            break
+        }
+      }
     }
 
     grid.push({
@@ -124,7 +135,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
                 <CardActionArea onClick={e => {
                     console.log(key)
-                    props.setScore({...props.score, grid: { ...props.score.grid, [key]: j < 3 ? !props.score.grid[key as keyof ScoringGrid] : ++props.score.grid[key as keyof ScoringGrid] % 3}})}
+                    props.setScore({...props.score, grid: { ...props.score.grid, [key]: j < 3 ? !props.score.grid[key as keyof ScoringGrid] : +props.score.grid[key as keyof ScoringGrid] + 1 % 3}})}
                   } sx={{ padding: '36%', position: 'relative' }} disabled={disabled}>
                   <Icon>{ shape }</Icon>
                 </CardActionArea>
@@ -140,7 +151,7 @@ export default function  ScoringTable(props: ScoringTableProps) {
               <CobeCard variant="outlined" style={{ backgroundColor: props.score.grid[key as keyof ScoringGrid] || disabled ? color : 'inherit'}}>
                 <CardActionArea onClick={e => {
                     console.log(key)
-                    props.setScore({...props.score, grid: { ...props.score.grid, [key]: j < 3 ? !props.score.grid[key as keyof ScoringGrid] : ++props.score.grid[key as keyof ScoringGrid] % 3}})}
+                    props.setScore({...props.score, grid: { ...props.score.grid, [key]: j < 3 ? !props.score.grid[key as keyof ScoringGrid] : +props.score.grid[key as keyof ScoringGrid] + 1 % 3}})}
                   } sx={{ padding: '36%', position: 'relative' }} disabled={disabled}>
                   <Icon>{ shape }</Icon>
                 </CardActionArea>
