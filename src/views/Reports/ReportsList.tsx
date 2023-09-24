@@ -35,7 +35,7 @@ type ReportTableData = {
 const columns: GridColDef[] = [
   { field: 'scouted_team', headerName: 'Team', flex: 2 },
   { field: 'event', headerName: 'Event', flex: 4 },
-  { field: 'match', headerName: 'Match', flex: 2 },
+  { field: 'match', headerName: 'Match', type: 'number', flex: 2 },
   { field: 'alliance', headerName: 'Alliance', flex: 2, cellClassName: (params: GridCellParams<String>) =>
     clsx('super-app', {
       red: params.value === "Red",
