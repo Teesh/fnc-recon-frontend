@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import './App.css'
-import Scout from './views/Scout'
+import Scout from './views/Scout/ChargedUp'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Reports from 'views/Reports'
 

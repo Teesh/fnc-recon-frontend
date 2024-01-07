@@ -19,7 +19,7 @@ import Dashboard from './Dashboard'
 import Teams from './Teams'
 import Events from './Events'
 import Reports from './Reports'
-import Scout from './Scout'
+import Scout from './Scout/Crescendo'
 import About from './About'
 
 const drawerWidth: number = 240

@@ -2,100 +2,13 @@ import * as React from 'react'
 import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, MenuItem, Select, FormControl,  InputLabel} from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, Route } from "react-router-dom";
-import { addReport } from 'db/connector'
-import ScoringTable from './ScoringTable'
+import { addReport } from 'db/Crescendo/connector'
 
 type ScoutReport = {
   teamNumber: string,
   alliance: string,
   eventName: string,
   match: string
-}
-
-export enum GamePiece {
-  None,
-  Cone,
-  Cube
-}
-
-export type ScoringGrid = {
-  cone_1_1: boolean,
-  cube_1_2: boolean,
-  cone_1_3: boolean,
-  cone_1_4: boolean,
-  cube_1_5: boolean,
-  cone_1_6: boolean,
-  cone_1_7: boolean,
-  cube_1_8: boolean,
-  cone_1_9: boolean,
-
-  cone_2_1: boolean,
-  cube_2_2: boolean,
-  cone_2_3: boolean,
-  cone_2_4: boolean,
-  cube_2_5: boolean,
-  cone_2_6: boolean,
-  cone_2_7: boolean,
-  cube_2_8: boolean,
-  cone_2_9: boolean,
-
-  cobe_3_1: GamePiece,
-  cobe_3_2: GamePiece,
-  cobe_3_3: GamePiece,
-  cobe_3_4: GamePiece,
-  cobe_3_5: GamePiece,
-  cobe_3_6: GamePiece,
-  cobe_3_7: GamePiece,
-  cobe_3_8: GamePiece,
-  cobe_3_9: GamePiece
-}
-
-export type ScoreSheet = {
-  grid: ScoringGrid,
-  charging: ChargingMode | ChargingMode[]
-}
-
-export enum ChargingMode {
-  None,
-  Community, // Left Community in Auto, Parked in Endgame
-  Docked,
-  Engaged
-}
-
-let defaultScore: ScoreSheet = {
-  grid: {
-    cone_1_1: false,
-    cube_1_2: false,
-    cone_1_3: false,
-    cone_1_4: false,
-    cube_1_5: false,
-    cone_1_6: false,
-    cone_1_7: false,
-    cube_1_8: false,
-    cone_1_9: false,
-
-    cone_2_1: false,
-    cube_2_2: false,
-    cone_2_3: false,
-    cone_2_4: false,
-    cube_2_5: false,
-    cone_2_6: false,
-    cone_2_7: false,
-    cube_2_8: false,
-    cone_2_9: false,
-
-    cobe_3_1: GamePiece.None,
-    cobe_3_2: GamePiece.None,
-    cobe_3_3: GamePiece.None,
-    cobe_3_4: GamePiece.None,
-    cobe_3_5: GamePiece.None,
-    cobe_3_6: GamePiece.None,
-    cobe_3_7: GamePiece.None,
-    cobe_3_8: GamePiece.None,
-    cobe_3_9: GamePiece.None,
-  },
-
-  charging: ChargingMode.None
 }
 
 export type ScoreData = {
@@ -105,9 +18,46 @@ export type ScoreData = {
   match: string,
   scouted_team: string,
   total_score: number
-  auto_score: ScoreSheet,
-  tele_score: ScoreSheet,
+  score: ScoreSheet,
   details: string
+}
+
+export enum Climbing {
+  None,
+  Park,
+  Single,
+  Double,
+  Triple
+}
+
+export type ScoreSheet = {
+  leave: boolean,
+  auto_amp: number,
+  auto_speaker: number,
+  amp: number,
+  speaker: number,
+  amped_speaker: number,
+  ground_intake: number,
+  source_intake: number,
+  cooperetition: boolean,
+  climb: Climbing,
+  high_note: boolean,
+  trap: number
+}
+
+let defaultScore: ScoreSheet = {
+  leave: false,
+  auto_amp: 0,
+  auto_speaker: 0,
+  amp: 0,
+  speaker: 0,
+  amped_speaker: 0,
+  ground_intake: 0,
+  source_intake: 0,
+  cooperetition: false,
+  climb: Climbing.None,
+  high_note: false,
+  trap: 0
 }
 
 interface TabPanelProps {
@@ -165,63 +115,19 @@ export default function ScoutForm() {
   }
 
   const [totalScore, setTotalScore] = useState(0)
-  const [autoScore, setAutoScore] = useState<ScoreSheet>({...defaultScore, charging: []})
-  const [teleScore, setTeleScore] = useState<ScoreSheet>(defaultScore)
+  const [score, setScore] = useState<ScoreSheet>(defaultScore)
   const [details, setDetails] = useState('')
 
   useEffect(() => {
     const calcScore = () => {
-      let tempScore = 0
-      Object.values(autoScore.grid).forEach((value: boolean | GamePiece, index: number) => {
-        if (index < 9 && value) tempScore += 6
-        if (index >= 9 && index < 18 && value) tempScore += 4
-        if (index >= 18 && value) tempScore += 3
-      })
-      Object.values(teleScore.grid).forEach((value: boolean | GamePiece, index: number) => {
-        if (index < 9 && value) tempScore += 5
-        if (index >= 9 && index < 18 && value) tempScore += 3
-        if (index >= 18 && value) tempScore += 2
-      })
-      
-      let linkCounter = 0
-      for (let i = 0; i < 27; i++) {
-        if (Object.values(autoScore.grid)[i] || Object.values(teleScore.grid)[i]) linkCounter++
-        if (linkCounter === 3) {
-          tempScore += 5
-          linkCounter = 0
-        }
-        if (i === 8 || i === 17) linkCounter = 0
-      }
-  
-      if (Array.isArray(autoScore.charging)) {
-        if(autoScore.charging.includes(ChargingMode.Community)) tempScore += 3
-        if(autoScore.charging.includes(ChargingMode.Docked)) tempScore += 8
-        else if(autoScore.charging.includes(ChargingMode.Engaged)) tempScore += 12
-      }
-      if(teleScore.charging === ChargingMode.Community) tempScore += 2
-      else if(teleScore.charging === ChargingMode.Docked) tempScore += 6
-      else if(teleScore.charging === ChargingMode.Engaged) tempScore += 10
-  
-      return tempScore
     }
-    setTotalScore(calcScore())
-  }, [autoScore, teleScore])
+  }, [score])
 
   const submitReport = async () => {
     if (!process.env.REACT_APP_TEAM_NUMBER) {
       //alert("Team Number missing in env file")
       //return
     }
-    console.log({
-      reporting_team: "0000",
-      alliance: scoutInfo.alliance,
-      event: scoutInfo.eventName,
-      match: scoutInfo.match,
-      total_score: totalScore,
-      scouted_team: scoutInfo.teamNumber,
-      auto_score: autoScore,
-      tele_score: teleScore
-    })
     let body: ScoreData = {
       reporting_team: "0000",
       alliance: scoutInfo.alliance,
@@ -229,8 +135,7 @@ export default function ScoutForm() {
       match: scoutInfo.match,
       total_score: totalScore,
       scouted_team: scoutInfo.teamNumber,
-      auto_score: autoScore,
-      tele_score: teleScore,
+      score: score,
       details: details,
     }
 
@@ -244,8 +149,6 @@ export default function ScoutForm() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
-
-  let flip = ['blue1', 'blue2', 'blue3'].includes(scoutInfo.alliance)
 
   return (
     <React.Fragment>
@@ -283,12 +186,12 @@ export default function ScoutForm() {
                 sx={{ textAlign: 'left' }}
                 onChange={e => setScoutInfo({...scoutInfo, eventName: e.target.value})}
               >
-                <MenuItem value={"UNC Asheville Event"}>UNC Asheville Event</MenuItem>
-                <MenuItem value={"THOR East"}>THOR East</MenuItem>
-                <MenuItem value={"Doyenne East"}>Doyenne East</MenuItem>
-                <MenuItem value={"THOR West"}>THOR West</MenuItem>
-                <MenuItem value={"Doyenne West"}>Doyenne West</MenuItem>
-                <MenuItem value={"Rumble on the Road"}>Doyenne West</MenuItem>
+                <MenuItem value={"Orange County"}>Orange County</MenuItem>
+                <MenuItem value={"UNC Pembrooke"}>UNC Pembrooke</MenuItem>
+                <MenuItem value={"UNC Asheville"}>UNC Asheville</MenuItem>
+                <MenuItem value={"Mecklenberg County"}>Mecklenberg County</MenuItem>
+                <MenuItem value={"Wake County"}>Wake County</MenuItem>
+                <MenuItem value={"State Championship"}>State Championship</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -342,13 +245,31 @@ export default function ScoutForm() {
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
               <Tab label="Autonomous" />
               <Tab label="Teleop" />
+              <Tab label="Endgame" />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <ScoringTable key={0} score={autoScore} flip={flip} setScore={setAutoScore} teleScore={teleScore} sw={screenWidth}/>
+            
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <ScoringTable key={1} score={teleScore} flip={flip} setScore={setTeleScore} autoScore={autoScore}  sw={screenWidth} teleop/>
+          </CustomTabPanel>
+          <CustomTabPanel value={value} index={2}>
+            <Grid item xs={12} mb={2}>
+              <ToggleButtonGroup
+                value={score.climb}
+                size="large"
+                onChange={(e,v) => setScore({...score, climb: v})}
+                exclusive
+                fullWidth
+                orientation={screenWidth < 660 ? 'vertical' : 'horizontal'}
+              >
+                <ToggleButton color="warning" value={Climbing.None}>None</ToggleButton>
+                <ToggleButton color="info" value={Climbing.Park}>Park</ToggleButton>
+                <ToggleButton color="success" value={Climbing.Single}>Single</ToggleButton>
+                <ToggleButton color="success" value={Climbing.Double}>Double</ToggleButton>
+                <ToggleButton color="success" value={Climbing.Triple}>Triple</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
           </CustomTabPanel>
         </Box>
         <Grid item xs={12} mb={2}>

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { getReports } from 'db/connector'
-import { ChargingMode, GamePiece, ScoreData } from 'views/Scout/ScoutForm'
+import { getReports } from 'db/ChargedUp/connector'
+import { ChargingMode, GamePiece, ScoreData } from 'views/Scout/ChargedUp/ScoutForm'
 import { Box, Button, Grid } from '@mui/material'
 import { FileDownload } from '@mui/icons-material'
 import { Link } from "react-router-dom"
