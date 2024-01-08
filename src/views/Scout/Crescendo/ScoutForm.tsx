@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, MenuItem, Select, FormControl,  InputLabel} from '@mui/material'
+import { Box, Button, Divider, Grid, Tab, Tabs, TextField, ToggleButton, ToggleButtonGroup, MenuItem, Select, FormControl,  InputLabel, ButtonGroup} from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, Route } from "react-router-dom";
 import { addReport } from 'db/Crescendo/connector'
@@ -243,17 +243,261 @@ export default function ScoutForm() {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} variant="fullWidth">
-              <Tab label="Autonomous" />
+              <Tab label="Auto" />
               <Tab label="Teleop" />
               <Tab label="Endgame" />
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Starting Zone</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ToggleButtonGroup
+                value={score.leave}
+                size="large"
+                onChange={(e,v) => setScore({...score, leave: v})}
+                exclusive
+                fullWidth
+                orientation={screenWidth < 660 ? 'vertical' : 'horizontal'}
+              >
+                <ToggleButton color="error" value={false}>Didn't Leave</ToggleButton>
+                <ToggleButton color="success" value={true}>Did Leave</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Auto Amp Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, auto_amp: Math.max(score.auto_amp-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.auto_amp}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, auto_amp: score.auto_amp+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Auto Speaker Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, auto_speaker: Math.max(score.auto_speaker-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.auto_speaker}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, auto_speaker: score.auto_speaker+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Amp Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, amp: Math.max(score.amp-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.amp}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, amp: score.amp+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Speaker Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, speaker: Math.max(score.speaker-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.speaker}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, speaker: score.speaker+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Amplified Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, amped_speaker: Math.max(score.amped_speaker-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.amped_speaker}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, amped_speaker: score.amped_speaker+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Ground Intakes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, ground_intake: Math.max(score.ground_intake-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.ground_intake}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, ground_intake: score.ground_intake+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Source Intakes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, source_intake: Math.max(score.source_intake-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.source_intake}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, source_intake: score.source_intake+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Cooperition</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ToggleButtonGroup
+                value={score.cooperetition}
+                size="large"
+                onChange={(e,v) => setScore({...score, cooperetition: v})}
+                exclusive
+                fullWidth
+                orientation={screenWidth < 660 ? 'vertical' : 'horizontal'}
+              >
+                <ToggleButton color="error" value={false}>Didn't Cooperate</ToggleButton>
+                <ToggleButton color="success" value={true}>Did Cooperate</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={2}>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Parking & Climbing</h2>
+            </Grid>
             <Grid item xs={12} mb={2}>
               <ToggleButtonGroup
                 value={score.climb}
@@ -269,6 +513,52 @@ export default function ScoutForm() {
                 <ToggleButton color="success" value={Climbing.Double}>Double</ToggleButton>
                 <ToggleButton color="success" value={Climbing.Triple}>Triple</ToggleButton>
               </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>High Note</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ToggleButtonGroup
+                value={score.high_note}
+                size="large"
+                onChange={(e,v) => setScore({...score, high_note: v})}
+                exclusive
+                fullWidth
+                orientation={screenWidth < 660 ? 'vertical' : 'horizontal'}
+              >
+                <ToggleButton color="error" value={false}>Didn't Spotlight</ToggleButton>
+                <ToggleButton color="success" value={true}>Did Spotlight</ToggleButton>
+              </ToggleButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Traps Placed</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, trap: Math.max(score.trap-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.trap}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, trap: Math.min(score.trap+1,3)})}
+                >+</Button>
+              </ButtonGroup>
             </Grid>
           </CustomTabPanel>
         </Box>
