@@ -18,7 +18,7 @@ import { mainListItems } from '../components/MenuItems/listItems'
 import Dashboard from './Dashboard'
 import Teams from './Teams'
 import Events from './Events'
-import Reports from './Reports'
+import Reports from './Reports/Crescendo'
 import Scout from './Scout/Crescendo'
 import About from './About'
 

@@ -9,7 +9,6 @@ function ReportsContent() {
   return (
     <React.Fragment>
       <Container maxWidth={false} sx={{ mt: 4, mb: 4 }}>
-        {/* Recent Orders */}
         <Grid item xs={12}>
           <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
             <ReportsList />

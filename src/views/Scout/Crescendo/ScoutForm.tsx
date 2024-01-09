@@ -120,7 +120,17 @@ export default function ScoutForm() {
 
   useEffect(() => {
     const calcScore = () => {
+      let auto = 0, tele = 0, endgame = 0, total = 0
+      auto = score.auto_amp*2 + score.auto_speaker*5 + (score.leave ? 2 : 0)
+      tele = score.amp + score.speaker*2 + score.amped_speaker*5
+      endgame += score.trap*5
+      if (score.climb === Climbing.Single) endgame += 3
+      else if (score.climb === Climbing.Double || score.climb === Climbing.Triple) endgame += 5
+      if (score.high_note && (score.climb === Climbing.Single || score.climb === Climbing.Double || score.climb === Climbing.Triple)) endgame += 1
+      total = auto + tele + endgame
+      setTotalScore(total)
     }
+    calcScore()
   }, [score])
 
   const submitReport = async () => {

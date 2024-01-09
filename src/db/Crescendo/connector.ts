@@ -18,14 +18,14 @@ const db = getFirestore(app)
 
 let endpoint: string
 if (process.env.REACT_APP_ENVIRONMENT === 'local') {
-  endpoint = 'fnc-united-db-dev'
+  endpoint = 'crescendo-dev'
 } else {
   endpoint = ''
 }
 
 export const testDB = async () => {
   console.log("Connecting to DB")
-  let snapshot = await getCountFromServer(collection(db, 'fnc-united-db-dev'))
+  let snapshot = await getCountFromServer(collection(db, 'crescendo-dev'))
   console.log(`${snapshot.data().count} entries found`)
 }
 
