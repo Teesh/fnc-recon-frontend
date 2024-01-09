@@ -260,8 +260,11 @@ export default function ScoutForm() {
               variant="outlined"
               label="Team Number"
               placeholder="1234"
-              type="number"
-              onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              inputProps={{ inputMode: 'numeric' }}
+              onChange={e => {
+                let regex = /^[0-9\b]+$/
+                if(e.target.value === "" || regex.test(e.target.value)) setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
+              }
               value={scoutInfo.teamNumber}
               fullWidth
             />
@@ -297,8 +300,11 @@ export default function ScoutForm() {
               variant="outlined"
               label="Match Number"
               placeholder="12"
-              type="number"
-              onChange={e => setScoutInfo({...scoutInfo, match: e.target.value})}
+              inputProps={{ inputMode: 'numeric' }}
+              onChange={e => {
+                let regex = /^[0-9\b]+$/
+                if(e.target.value === "" || regex.test(e.target.value)) setScoutInfo({...scoutInfo, match: e.target.value})}
+              }
               value={scoutInfo.match}
               fullWidth
             />
