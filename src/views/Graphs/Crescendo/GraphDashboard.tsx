@@ -7,6 +7,7 @@ import { FileDownload } from '@mui/icons-material'
 import { Link } from "react-router-dom"
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid'
 import clsx from 'clsx'
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 type ScoreDataWithID = {
   id: string
@@ -56,9 +57,10 @@ const columns: GridColDef[] = [
   { field: 'details',headerName: 'Notes', flex: 6 },
 ]
 
-export default function TeamsList() {
+export default function GraphDashboard() {
   const [rawData, setRawData] = useState<ScoreDataWithID[]>([])
   const [reports, setReports] = useState<ReportTableData[]>([])
+  const [data, setData] = useState<any[]>([])
   
   useEffect(() => {
     const getAllReports = async () => {
@@ -81,9 +83,11 @@ export default function TeamsList() {
       })
 
       let rows: ReportTableData[] = []
+      let datas: any[] = []
       rawData.forEach(e => {
         console.log(e)
         let row: ReportTableData
+        let datum: any
         let endgame = 0
         endgame += e.score.trap*5
         if (e.score.climb === Climbing.Single) endgame += 3
@@ -110,48 +114,27 @@ export default function TeamsList() {
           details: e.details
         }
 
+        datum = {
+          name: e.match,
+          auto: (e.score.leave ? 2 : 0) + e.score.auto_amp*2 + e.score.auto_speaker*5,
+          tele: e.score.amp + e.score.speaker*2 + e.score.amped_speaker*5,
+          endgame: endgame
+        }
+
         rows.push(row)
+        datas.push(datum)
       })
 
       setReports(rows)
+
+      datas.sort((a,b) => {
+        return a.name - b.name;
+      })
+      setData(datas)
     }
 
     calculateAggregateData()
   }, [rawData])
-
-  const downloadFlatData = () => {
-    let rows = []
-    rows.push("team, event, match, alliance, score, notes, , leave, auto_amp, auto_speaker, amp, speaker, amped_speaker, climb, trap, ground_intake, source_intake, cooperitition")
-    rawData.forEach(e => {
-      let row = []
-      row.push(e.scouted_team)
-      row.push(e.event)
-      row.push(e.match)
-      row.push(e.alliance)
-      row.push(e.total_score)
-      row.push(e.details)
-      row.push(' ')
-      row.push(e.score.leave)
-      row.push(e.score.auto_speaker)
-      row.push(e.score.auto_amp)
-      row.push(e.score.speaker)
-      row.push(e.score.amp)
-      row.push(e.score.amped_speaker)
-      row.push(e.score.climb)
-      row.push(e.score.trap)
-      row.push(e.score.ground_intake)
-      row.push(e.score.source_intake)
-      row.push(e.score.cooperetition)
-
-      rows.push(row.join(','))
-    })
-
-    let csvContent = "data:text/csv;charset=utf-8," 
-    + rows.join("\n")
-    console.log(csvContent)
-    let encodedUri = encodeURI(csvContent)
-    window.open(encodedUri)
-  }
   
   return (
     <React.Fragment>
@@ -160,15 +143,7 @@ export default function TeamsList() {
           <Link to="/scout" ><Button variant="contained" color="secondary">Add Report</Button></Link>
         </Grid>
         <Grid item xs={12} lg={4} textAlign="center">
-          <h1>Reports</h1>
-        </Grid>
-        <Grid item xs={12} lg={4} display="flex" justifyContent="right" alignItems="center">
-          <Button
-            variant="contained"
-            startIcon={<FileDownload />}
-            onClick={downloadFlatData}
-            color="success"
-          >Download Raw</Button>
+          <h1>Graph</h1>
         </Grid>
       </Grid>
       <Grid item xs={12}>
@@ -187,7 +162,26 @@ export default function TeamsList() {
             },
           }}
         >
-          <DataGrid rows={reports} columns={columns} slots={{ toolbar: GridToolbar }} checkboxSelection/>
+          <BarChart
+            width={500}
+            height={300}
+            data={data}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="auto" stackId="a" fill="#0000ff" />
+            <Bar dataKey="tele" stackId="a" fill="#00dd00" />
+            <Bar dataKey="endgame" stackId="a" fill="#ff0000" />
+          </BarChart>
         </Box>
       </Grid>
     </React.Fragment>

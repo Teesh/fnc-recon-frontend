@@ -19,6 +19,7 @@ import Dashboard from './Dashboard'
 import Teams from './Teams'
 import Events from './Events'
 import Reports from './Reports/Crescendo'
+import Graphs from './Graphs/Crescendo'
 import Scout from './Scout/Crescendo'
 import About from './About'
 
@@ -155,6 +156,7 @@ function MainContent() {
             <Route path="teams" element={<Teams />} />
             <Route path="events" element={<Events />} />
             <Route path="reports" element={<Reports />} />
+            <Route path="graphs" element={<Graphs />} />
             <Route path="scout" element={<Scout />} />
             <Route path="about" element={<About />} />
           </Routes>

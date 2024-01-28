@@ -589,7 +589,7 @@ export default function ScoutForm() {
           >Submit</Button>
         </Grid>
         <Grid item xs={12}>
-          <Link to="/reports" ><Button variant="contained" color="secondary" fullWidth>Show Reports</Button></Link>
+          <Link to="/graphs" ><Button variant="contained" color="secondary" fullWidth>Show Reports</Button></Link>
         </Grid>
       </Grid>
     </React.Fragment>
