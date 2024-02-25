@@ -1,4 +1,3 @@
-//hi
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { getReports } from 'db/Crescendo/connector'
@@ -8,6 +7,11 @@ import { FileDownload } from '@mui/icons-material'
 import { Link } from "react-router-dom"
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from '@mui/x-data-grid'
 import clsx from 'clsx'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
 
 type ScoreDataWithID = {
   id: string
@@ -72,7 +76,6 @@ export default function TeamsList() {
     }
     getAllReports()
   }, [])
-
   useEffect(() => {
     const calculateAggregateData = async () => {
       let dbReports = await getReports()
@@ -80,7 +83,6 @@ export default function TeamsList() {
       dbReports?.forEach(doc => {
         docs.push({...doc.data(), id: doc.id})
       })
-
       let rows: ReportTableData[] = []
       rawData.forEach(e => {
         console.log(e)
@@ -154,6 +156,7 @@ export default function TeamsList() {
     window.open(encodedUri)
   }
   
+  
   return (
     <React.Fragment>
       <Grid container>
@@ -172,6 +175,7 @@ export default function TeamsList() {
           >Download Raw</Button>
         </Grid>
       </Grid>
+      {window.screen.availWidth > 900 ? (
       <Grid item xs={12}>
         <Box
           sx={{
@@ -191,6 +195,22 @@ export default function TeamsList() {
           <DataGrid rows={reports} columns={columns} slots={{ toolbar: GridToolbar }} checkboxSelection/>
         </Box>
       </Grid>
+      ):(
+        <React.Fragment>
+        {reports.map((report) => (
+          <TableRow>
+            {/*<TableCell>{report.reporting_team}</TableCell>*/}
+            <TableCell style={{fontSize: "1.5vw"}}>{report.scouted_team}</TableCell>
+            <TableCell style={{fontSize: "1.5vw"}}>{report.event}</TableCell>
+            <TableCell style={{fontSize: "1.5vw"}} align="center">{report.match}</TableCell>
+            <TableCell style={{fontSize: "1.5vw"}} align="center">{(report.alliance != undefined)?(<span style={{color: report.alliance.substring(0,report.alliance.length -1)}}>{report.alliance.toUpperCase()}</span>):(report.alliance)}</TableCell>
+            <TableCell style={{fontSize: "1.5vw"}} align="center">{`${report.total_score}`}</TableCell>
+            <TableCell style={{fontSize: "1.5vw"}}>
+            </TableCell>
+          </TableRow>
+        ))}
+        </React.Fragment>
+      )}
     </React.Fragment>
   )
 }
