@@ -205,7 +205,7 @@ Project Link: [https://github.com/Teesh/fnc-recon-frontend](https://github.com/T
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [RoboEagles 4828](https://www.roboeagles.org), [Terrorbytes 4561](https://www.terrorbytes.org), [Omegabytes 5727](https://sites.google.com/view/omegabytesprojects/home), and the 20+ FNCU teams for their support and vision in this project
+* [RoboEagles 4828](https://www.roboeagles.org), [Terrorbytes 4561](https://www.terrorbytes.org), [Yeti 3506](https://yetirobotics.org/), [Omegabytes 5727](https://sites.google.com/view/omegabytesprojects/home), and the 20+ FNCU teams for their support and vision in this project
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
