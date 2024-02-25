@@ -34,9 +34,11 @@ export type ScoreSheet = {
   leave: boolean,
   auto_amp: number,
   auto_speaker: number,
+  missed_auto_speaker: number,
   amp: number,
   speaker: number,
   amped_speaker: number,
+  missed_speaker: number,
   ground_intake: number,
   source_intake: number,
   cooperetition: boolean,
@@ -49,9 +51,11 @@ let defaultScore: ScoreSheet = {
   leave: false,
   auto_amp: 0,
   auto_speaker: 0,
+  missed_auto_speaker: 0,
   amp: 0,
   speaker: 0,
   amped_speaker: 0,
+  missed_speaker: 0,
   ground_intake: 0,
   source_intake: 0,
   cooperetition: false,
@@ -335,6 +339,36 @@ export default function ScoutForm() {
                 >+</Button>
               </ButtonGroup>
             </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Missed Speaker Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, missed_auto_speaker: Math.max(score.missed_auto_speaker-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.missed_auto_speaker}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, missed_auto_speaker: score.missed_auto_speaker+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <Grid item xs={12} mb={2} textAlign="left">
@@ -424,6 +458,36 @@ export default function ScoutForm() {
                 <Button 
                   color="success" 
                   onClick={() => setScore({...score, amped_speaker: score.amped_speaker+1})}
+                >+</Button>
+              </ButtonGroup>
+            </Grid>
+            <Grid item xs={12} mb={2} textAlign="left">
+              <h2>Missed Speaker Notes</h2>
+            </Grid>
+            <Grid item xs={12} mb={2}>
+              <ButtonGroup
+                variant="contained" 
+                fullWidth
+              >
+                <Button 
+                  color="error" 
+                  onClick={() => setScore({...score, missed_speaker: Math.max(score.missed_speaker-1,0)})}
+                >-</Button>
+                <Button 
+                  size="large" 
+                  disabled
+                  variant="outlined"
+                  sx={{
+                    "&.Mui-disabled": {
+                      color: "inherit"
+                    }
+                  }}
+                >
+                  {score.missed_speaker}
+                </Button>
+                <Button 
+                  color="success" 
+                  onClick={() => setScore({...score, missed_speaker: score.missed_speaker+1})}
                 >+</Button>
               </ButtonGroup>
             </Grid>
