@@ -38,7 +38,7 @@
     <a href="https://github.com/Teesh/fnc-recon-frontend"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://fnc-recon-frontend-avxirbvnfa-uc.a.run.app/">View Demo</a>
+    <a href="https://fnc-united.web.app/">View Demo</a>
     ·
     <a href="https://github.com/Teesh/fnc-recon-frontend/issues">Report Bug</a>
     ·
