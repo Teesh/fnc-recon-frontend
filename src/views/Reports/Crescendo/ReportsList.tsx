@@ -179,7 +179,7 @@ export default function TeamsList() {
           >Download Raw</Button>
         </Grid>
       </Grid>
-      {window.screen.availWidth > 900 ? (
+      {window.screen.availWidth > 1100 ? (
       <Grid item xs={12}>
         <Box
           sx={{
@@ -201,6 +201,7 @@ export default function TeamsList() {
       </Grid>
       ):(
         <React.Fragment>
+          <div style={{}}>
         {reports.map((report) => (
           <div style={{borderRadius: "10px", border: "2px solid grey", margin: "4px"}}>
             <h3 >{report.scouted_team}</h3>
@@ -213,6 +214,7 @@ export default function TeamsList() {
             <small>Reported By {report.reporting_team}</small>
           </div>
         ))}
+        </div>
         </React.Fragment>
       )}
     </React.Fragment>
