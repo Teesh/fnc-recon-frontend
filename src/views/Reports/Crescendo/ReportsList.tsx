@@ -202,20 +202,18 @@ export default function TeamsList() {
       ):(
         <React.Fragment>
         {reports.map((report) => (
-          <TableRow>
-            <TableCell>{report.reporting_team}</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}}>{report.scouted_team}</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}}>{report.event}</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">Match {report.match}</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">{(report.alliance != undefined)?(<span style={{color: report.alliance.substring(0,report.alliance.length -1)}}>{report.alliance.toUpperCase()} Alliance</span>):(report.alliance)}</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">Total {`${report.total_score}`} Points: ({`${report.auto_score}`} + {`${report.tele_score}`} + {`${report.endgame_score}`})</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">{`${report.source_intake + report.ground_intake}`} Pieces</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">{`${report.amp}`} Amp Cycles</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">{`${report.amp_speaker}`} Amplified Speaker  |  {`${report.speaker}`} Unamplified Speaker | {report.missed_speaker/(report.amp_speaker+report.speaker + report.missed_speaker)}% Accuracy</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}} align="center">{`${report.trap}`} Trap Cycles</TableCell>
-            <TableCell style={{fontSize: "1.5vw"}}>
-            </TableCell>
-          </TableRow>
+          <div style={{borderRadius: "10px", border: "2px solid grey", margin: "4px", }}>
+            <h3 >{report.scouted_team}</h3>
+            <p >{report.event}</p>
+            <p  >Match {report.match}</p>
+            <p  >{(report.alliance != undefined)?(<span style={{color: report.alliance.substring(0,report.alliance.length -1)}}>{report.alliance.toUpperCase()} Alliance</span>):(report.alliance)}</p>
+            <p  >{`${report.total_score}`} Points: ({`${report.auto_score}`} + {`${report.tele_score}`} + {`${report.endgame_score}`})</p>
+            <p  >{`${report.source_intake + report.ground_intake}`} Pieces</p>
+            <p  >{`${report.amp}`} Amp Cycles</p>
+            <p  >{`${report.amp_speaker}`} Amplified Speaker  |  {`${report.speaker}`} Unamplified Speaker | {report.missed_speaker/(report.amp_speaker+report.speaker + report.missed_speaker)}% Accuracy</p>
+            <p  >{`${report.trap}`} Trap Cycles</p>
+            <small>Reported: {report.reporting_team}</small>
+          </div>
         ))}
         </React.Fragment>
       )}

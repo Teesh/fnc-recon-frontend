@@ -8,7 +8,8 @@ type ScoutReport = {
   teamNumber: string,
   alliance: string,
   eventName: string,
-  match: string
+  match: string,
+  reportingTeam: string,
 }
 
 export type ScoreData = {
@@ -105,7 +106,8 @@ export default function ScoutForm() {
     teamNumber: '',
     alliance: '',
     eventName: '',
-    match: ''
+    match: '',
+    reportingTeam: '',
   })
 
   const handleAllianceChange = (
@@ -143,7 +145,7 @@ export default function ScoutForm() {
       //return
     }
     let body: ScoreData = {
-      reporting_team: "0000",
+      reporting_team: scoutInfo.reportingTeam,
       alliance: scoutInfo.alliance,
       event: scoutInfo.eventName,
       match: scoutInfo.match,
@@ -180,6 +182,24 @@ export default function ScoutForm() {
               type="number"
               onChange={e => setScoutInfo({...scoutInfo, teamNumber: e.target.value})}
               value={scoutInfo.teamNumber}
+              fullWidth
+            />
+          </Grid>
+        </Grid>
+        </Grid>
+        <Grid px={3} justifyContent="center" container spacing={2}>
+        <Grid item xs={12}>
+        </Grid>
+        <br></br><br></br>
+        <Grid container>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              label="Reporting Team"
+              placeholder="1234"
+              type="number"
+              onChange={e => setScoutInfo({...scoutInfo, reportingTeam: e.target.value})}
+              value={scoutInfo.reportingTeam}
               fullWidth
             />
           </Grid>
