@@ -16,12 +16,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-let endpoint: string
-if (process.env.REACT_APP_ENVIRONMENT === 'local') {
-  endpoint = 'crescendo-dev'
-} else {
-  endpoint = ''
-}
+let endpoint = 'crescendo-dev'
+
 
 export const testDB = async () => {
   console.log("Connecting to DB")
