@@ -16,12 +16,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
 
-let endpoint = 'crescendo-dev'
+let endpoint = 'crescendo'
 
 
 export const testDB = async () => {
   console.log("Connecting to DB")
-  let snapshot = await getCountFromServer(collection(db, 'crescendo-dev'))
+  let snapshot = await getCountFromServer(collection(db, 'crescendo'))
   console.log(`${snapshot.data().count} entries found`)
 }
 
