@@ -94,13 +94,13 @@ export default function TeamsList() {
         if (e.score.climb === Climbing.Single) endgame += 3
         else if (e.score.climb === Climbing.Double || e.score.climb === Climbing.Triple) endgame += 5
         if (e.score.high_note && (e.score.climb === Climbing.Single || e.score.climb === Climbing.Double || e.score.climb === Climbing.Triple)) endgame += 1
-
+        console.log(e.alliance)
         row = {
           id: e.id,
           scouted_team: e.scouted_team,
           event: e.event,
           match: e.match,
-          alliance: e.alliance.charAt(0) === "r" ? "Red" : "Blue",
+          alliance: (e.alliance != "-" && e.alliance != null && e.alliance != "")?(e.alliance.charAt(0) === "r" ? "Red" : "Blue"):("N/A"),
           total_score: e.total_score,
           gp: e.score.amp + e.score.speaker + e.score.amped_speaker + e.score.auto_amp + e.score.auto_speaker,
           speaker: e.score.speaker,
@@ -205,7 +205,7 @@ export default function TeamsList() {
         {reports.map((report) => (
           <div style={{borderRadius: "10px", border: "2px solid grey", margin: "4px"}}>
             <h3 >{report.scouted_team}</h3>
-            <p >{report.event} Match {report.match} ({(report.alliance != undefined)?(<span style={{color: report.alliance.substring(0,report.alliance.length -1)}}>{report.alliance.toUpperCase()}</span>):(report.alliance)})</p>
+            <p >{report.event} Match {report.match} ({(report.alliance != undefined && report.alliance != "-")?(<span style={{color: report.alliance.substring(0,report.alliance.length -1)}}>{report.alliance.toUpperCase()}</span>):(report.alliance)})</p>
             <p  >{`${report.total_score}`} Points: ({`${report.auto_score}`} + {`${report.tele_score}`} + {`${report.endgame_score}`})</p>
             <p  >{`${report.source_intake + report.ground_intake}`} Pieces</p>
             <p  >{`${report.amp}`} Amp Cycles</p>
